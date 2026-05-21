@@ -1,0 +1,129 @@
+from collections import deque
+
+class BFS_Vaccum_2:
+    def __init__(self):
+        
+        self.q = deque() 
+        self.q.append([
+            [[0, 0, 1, 1],
+             [0, 2, -1, 1],
+             [1, -1, 1, 1],
+             [1, 0, 0, 1]], None, "START", 0])
+        self.reached = []
+        self.reached.append(self.q[0][0])
+        self.start = self.q[0][0]
+
+    def get_location(self, node):
+        room = node[0]
+        for i in range(len(room)):
+            for j in range(len(room[0])):
+                if room[i][j] == 2:
+                    return i, j
+        return None, None
+    
+    def possible_move(self, node):
+        x, y = self.get_location(node)
+        matrix = node[0]
+        move = []
+        opt_move = []
+        if x > 0 and matrix[x-1][y] != -1:  
+            move.append("up")
+            if matrix[x-1][y] != 0:
+                opt_move.append("up")
+        if x < len(matrix) - 1 and matrix[x+1][y] != -1:
+            move.append("down")
+            if matrix[x+1][y] != 0:
+                opt_move.append("down")
+        if y > 0 and matrix[x][y-1] != -1:
+            move.append("left")
+            if matrix[x][y-1] != 0:
+                opt_move.append("left")
+        if y < len(matrix[0]) - 1 and matrix[x][y+1] != -1:
+            move.append("right")
+            if matrix[x][y+1] != 0:
+                opt_move.append("right")
+        
+        if len(opt_move) != 0:
+            return opt_move
+        return move
+    
+    def act(self, node, action):
+        x, y = self.get_location(node)
+        matrix = [row[:] for row in node[0]]
+        tmp = matrix[x][y]
+        matrix[x][y] = 0
+
+        if action == "up":
+            matrix[x-1][y] = tmp
+        
+        if action == "down":
+            matrix[x+1][y] = tmp
+        
+        if action == "left":
+            matrix[x][y-1] = tmp
+
+        if action == "right":
+            matrix[x][y+1] = tmp
+
+        new_node = (matrix, node, action, node[3] + 1)
+        return new_node
+            
+    def is_goal(self, node):
+        room = node[0]
+        for i in range(len(room)):
+            for j in range(len(room[0])):
+                if room[i][j] == 1:
+                    return False
+                
+        return True
+
+    def solve(self):
+        
+        while self.q:
+            node = self.q.popleft() 
+            move = self.possible_move(node)
+
+            for m in move:
+                new_node = self.act(node, m)
+                if self.is_goal(new_node):
+                    return new_node
+
+                if new_node[0] not in self.reached:
+
+                    self.reached.append([row[:] for row in new_node[0]])
+                    self.q.append(new_node)
+
+        return None
+    
+    def get_path(self, node):
+        path = []
+
+        while node != None:
+            path.append((node[0], node[2]))
+            node = node[1]
+        
+        path.reverse()
+        return path
+    
+    def print_matrix(self, matrix):
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                print(matrix[i][j], end = " ")
+            print()
+
+    def run(self):
+        node = self.solve()
+
+        if node == None:
+            pass
+
+        path = self.get_path(node)
+
+        for i, p in enumerate(path):
+            print(f"Step: {i+1}")
+            self.print_matrix(p[0])
+            print(f"Action: {p[1]}")
+            print("=" * 15)
+        
+        print("!!!Căn phòng đã sạch sẽ hoàn toàn")
+
