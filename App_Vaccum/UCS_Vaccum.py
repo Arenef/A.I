@@ -7,8 +7,9 @@ class UCS_Vaccum:
                        [0, 2, -1, 1],
                        [1, -1, 1, 1],
                        [1, 0, 0, 1]], None, "START", 0]
-            
-        heapq.heappush(self.pq, (0, start_node))
+        
+        self.counter = 0 # biến thứ tự giúp tránh TypeError
+        heapq.heappush(self.pq, (0, self.counter, start_node))
         self.reached = set()
         self.reached.add((0, self.matrix_to_tuple(start_node[0])))
         self.start = start_node[0]
@@ -45,7 +46,7 @@ class UCS_Vaccum:
     
     def solve(self):
         while len(self.pq) != 0:
-            priority, node = heapq.heappop(self.pq)
+            priority, counter, node = heapq.heappop(self.pq)
 
             if self.is_goal(node):
                 return node
@@ -55,7 +56,8 @@ class UCS_Vaccum:
                 new_node = self.act(node, m)
                 state_tuple = (new_node[3], self.matrix_to_tuple(new_node[0]))
                 if state_tuple not in self.reached:
-                    heapq.heappush(self.pq, (new_node[3], new_node))
+                    self.counter += 1
+                    heapq.heappush(self.pq, (new_node[3], self.counter, new_node))
                     self.reached.add(state_tuple)
 
         return None
