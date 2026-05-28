@@ -131,6 +131,7 @@ class greedy_vacuum:
 
         if node == None:
             print("Máy hút bụi gặp lỗi")
+            return
 
         path = self.get_path(node)
 
