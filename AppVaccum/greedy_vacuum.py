@@ -1,13 +1,16 @@
 import heapq
 
 class Node():
-    def __init__(self, state, parent, act, cost_path):
+    def __init__(self, id, state, parent, act, cost_path):
+        self.id = id
         self.state = state
         self.parent = parent
         self.act = act
         self.cost_path = cost_path
 
     def __lt__(self, other):
+        if self.cost_path == other.cost_path:
+            return self.id < other.id
         return self.cost_path < other.cost_path
     
 class greedy_vacuum:
@@ -18,8 +21,9 @@ class greedy_vacuum:
                 [0, 2, -1, 1],
                 [1, -1, 1, 1],
                 [1, 0, 0, 1]]
+        self.counter = 0  # id
         self.start = state
-        start_node = Node(state, None, "START", self.heuristic(state))
+        start_node = Node(0, state, None, "START", self.heuristic(state))
         heapq.heappush(self.frontier, start_node)
         self.reached = set()
         self.reached.add(self.matrix_to_tuple(state))
@@ -61,8 +65,10 @@ class greedy_vacuum:
             matrix[x][y-1] = tmp
         if move == "right":
             matrix[x][y+1] = tmp
+        
+        self.counter += 1
 
-        return Node(matrix, node, move, self.heuristic(matrix))
+        return Node(self.counter, matrix, node, move, self.heuristic(matrix))
     
     def heuristic(self, matrix):
         score = 0 
@@ -131,7 +137,6 @@ class greedy_vacuum:
 
         if node == None:
             print("Máy hút bụi gặp lỗi")
-            return
 
         path = self.get_path(node)
 
