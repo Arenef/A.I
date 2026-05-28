@@ -67,7 +67,6 @@ class greedy_vacuum:
             matrix[x][y+1] = tmp
         
         self.counter += 1
-
         return Node(self.counter, matrix, node, move, self.heuristic(matrix))
     
     def heuristic(self, matrix):
