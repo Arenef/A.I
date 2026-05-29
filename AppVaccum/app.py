@@ -11,9 +11,12 @@ from dfs_vacuum_2 import dfs_vacuum_2
 from bfs_vaccum_1 import bfs_vacuum_1
 from bfs_vaccum_2 import bfs_vacuum_2
 from ucs_vacuum import ucs_vacuum
-from a_start_vacuum import a_star_vacuum
+from a_star_vacuum import a_star_vacuum
 from greedy_vacuum import greedy_vacuum
-
+from ida_star import ida_star_vacuum
+from simple_hill_climb import simple_hill_climb_vacuum
+from steepest_ascent_hill_climbing import steepest_ascent_hill_climbing
+from stochastic_hill_climbing import stochastic_ascent_hill_climbing
 class VacuumApp:
 
     def __init__(self, root):
@@ -140,7 +143,11 @@ class VacuumApp:
             "BFS 2",
             "UCS",
             "Greedy",
-            "A*"
+            "A*",
+            "IDA*",
+            "Simple Hill Climb",
+            "Steepest Ascent Hill Climbing",
+            "Stochastic Ascent Hill Climbing"
         ]
 
         # =========================
@@ -377,27 +384,25 @@ class VacuumApp:
 
         selected = self.algorithm_var.get()
 
+        print("Selected:", selected)
+
         algorithms = {
-
             "DFS 1": dfs_vacuum_1,
-
             "DFS 2": dfs_vacuum_2,
-
             "BFS 1": bfs_vacuum_1,
-
             "BFS 2": bfs_vacuum_2,
-
             "UCS": ucs_vacuum,
-
             "Greedy": greedy_vacuum,
-
-            "A*": a_star_vacuum
+            "A*": a_star_vacuum,
+            "IDA*": ida_star_vacuum,
+            "Simple Hill Climb": simple_hill_climb_vacuum,
+            "Steepest Ascent Hill Climbing": steepest_ascent_hill_climbing,
+            "Stochastic Ascent Hill Climbing": stochastic_ascent_hill_climbing
         }
 
-        if selected not in algorithms:
-            return
-
         self.vaccum_logic = algorithms[selected]()
+
+        print(self.vaccum_logic.start)
 
     # =========================
     # DRAW GRID
