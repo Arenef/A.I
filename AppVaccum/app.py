@@ -17,6 +17,7 @@ from ida_star import ida_star_vacuum
 from simple_hill_climb import simple_hill_climb_vacuum
 from steepest_ascent_hill_climbing import steepest_ascent_hill_climbing
 from stochastic_hill_climbing import stochastic_ascent_hill_climbing
+from local_beam_search import local_beam_search
 class VacuumApp:
 
     def __init__(self, root):
@@ -147,7 +148,8 @@ class VacuumApp:
             "IDA*",
             "Simple Hill Climb",
             "Steepest Ascent Hill Climbing",
-            "Stochastic Ascent Hill Climbing"
+            "Stochastic Ascent Hill Climbing",
+            "Local Beam Search"
         ]
 
         # =========================
@@ -175,10 +177,19 @@ class VacuumApp:
         # =========================
         # RUN BUTTON
         # =========================
-        self.run_btn = ttk.Button(
+        self.run_btn = tk.Button(
             self.left_frame,
             text="▶ RUN",
-            command=self.run_algorithm
+            command=self.run_algorithm,
+            font=("Segoe UI", 11, "bold"),
+            bg="#a6e3a1",
+            fg="#11111b",
+            activebackground="#94e2d5",
+            activeforeground="#11111b",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            pady=8
         )
 
         self.run_btn.pack(
@@ -187,13 +198,31 @@ class VacuumApp:
             fill="x"
         )
 
+        def on_enter_run(e):
+            self.run_btn.config(bg="#89b4fa", fg="#11111b")
+
+        def on_leave_run(e):
+            self.run_btn.config(bg="#a6e3a1", fg="#11111b")
+
+        self.run_btn.bind("<Enter>", on_enter_run)
+        self.run_btn.bind("<Leave>", on_leave_run)
+
         # =========================
         # RESET BUTTON
         # =========================
-        self.reset_btn = ttk.Button(
+        self.reset_btn = tk.Button(
             self.left_frame,
             text="⟳ RESET",
-            command=self.reset_app
+            command=self.reset_app,
+            font=("Segoe UI", 11, "bold"),
+            bg="#f38ba8",
+            fg="#11111b",
+            activebackground="#eba0ac",
+            activeforeground="#11111b",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            pady=8
         )
 
         self.reset_btn.pack(
@@ -201,6 +230,15 @@ class VacuumApp:
             padx=15,
             fill="x"
         )
+
+        def on_enter_reset(e):
+            self.reset_btn.config(bg="#eba0ac", fg="#11111b")
+
+        def on_leave_reset(e):
+            self.reset_btn.config(bg="#f38ba8", fg="#11111b")
+
+        self.reset_btn.bind("<Enter>", on_enter_reset)
+        self.reset_btn.bind("<Leave>", on_leave_reset)
 
         # ==================================================
         # CENTER PANEL
@@ -397,7 +435,8 @@ class VacuumApp:
             "IDA*": ida_star_vacuum,
             "Simple Hill Climb": simple_hill_climb_vacuum,
             "Steepest Ascent Hill Climbing": steepest_ascent_hill_climbing,
-            "Stochastic Ascent Hill Climbing": stochastic_ascent_hill_climbing
+            "Stochastic Ascent Hill Climbing": stochastic_ascent_hill_climbing,
+            "Local Beam Search": local_beam_search
         }
 
         self.vaccum_logic = algorithms[selected]()
@@ -492,6 +531,17 @@ class VacuumApp:
     # =========================
     # RUN
     # =========================
+    def analyze_matrix(self, matrix):
+        robot_pos = (0, 0)
+        dirt_count = 0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 2:
+                    robot_pos = (i, j)
+                elif matrix[i][j] == 1:
+                    dirt_count += 1
+        return robot_pos, dirt_count
+
     def run_algorithm(self):
 
         if self.is_running:
@@ -502,10 +552,6 @@ class VacuumApp:
         if self.vaccum_logic is None:
             return
 
-        self.log(
-            f"Running {self.algorithm_var.get()}..."
-        )
-
         self.status_label.config(
             text=f"Đang chạy {self.algorithm_var.get()}"
         )
@@ -514,7 +560,7 @@ class VacuumApp:
 
         if node is None:
 
-            self.log("Không tìm thấy lời giải")
+            self.log("❌ Không tìm thấy lời giải!")
 
             self.status_label.config(
                 text="Không tìm thấy lời giải"
@@ -523,6 +569,16 @@ class VacuumApp:
             return
 
         self.path = self.vaccum_logic.get_path(node)
+
+        # Log initial simulation start data
+        start_matrix = self.path[0][0]
+        robot_pos, dirt_count = self.analyze_matrix(start_matrix)
+        
+        self.log(f"🤖 [KHỞI CHẠY] Thuật toán: {self.algorithm_var.get()}")
+        self.log(f"📍 Vị trí bắt đầu: {robot_pos}")
+        self.log(f"🟤 Số lượng rác ban đầu: {dirt_count}")
+        self.log(f"⚡ Tổng số hành động dự kiến: {len(self.path) - 1}")
+        self.log("-" * 35)
 
         self.draw_grid(
             self.path[0][0]
@@ -577,9 +633,23 @@ class VacuumApp:
 
             self.draw_grid(matrix)
 
-            self.log(
-                f"Step {self.step_idx}: {action}"
-            )
+            if self.step_idx == 0:
+                # Starting state log
+                self.log(f"🐾 Bước 0: Trạng thái xuất phát")
+            else:
+                # Step simulation metrics
+                robot_pos, dirt_count = self.analyze_matrix(matrix)
+                prev_matrix = self.path[self.step_idx - 1][0]
+                _, prev_dirt = self.analyze_matrix(prev_matrix)
+                
+                self.log(f"🐾 Bước {self.step_idx}: Robot di chuyển [{action.upper()}]")
+                self.log(f"   ➔ Vị trí hiện tại: {robot_pos}")
+                self.log(f"   ➔ Rác còn lại trên bản đồ: {dirt_count}")
+                
+                if prev_dirt > dirt_count:
+                    self.log(f"   ✨ ĐÃ DỌN SẠCH RÁC TẠI VỊ TRÍ {robot_pos}!")
+            
+            self.log("-" * 35)
 
             self.progress["value"] = self.step_idx + 1
 
@@ -596,7 +666,8 @@ class VacuumApp:
                 text="✔ Hoàn thành"
             )
 
-            self.log("DONE")
+            self.log("🏆 [THÀNH CÔNG] Robot đã hoàn thành dọn sạch rác!")
+            self.log("=" * 35)
 
             self.is_running = False
 
