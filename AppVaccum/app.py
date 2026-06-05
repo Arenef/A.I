@@ -18,6 +18,9 @@ from simple_hill_climb import simple_hill_climb_vacuum
 from steepest_ascent_hill_climbing import steepest_ascent_hill_climbing
 from stochastic_hill_climbing import stochastic_ascent_hill_climbing
 from local_beam_search import local_beam_search
+from random_restart_hill_climbing import random_restart_hill_climbing
+from simulated_annealing import simulated_annealing
+
 class VacuumApp:
 
     def __init__(self, root):
@@ -112,7 +115,7 @@ class VacuumApp:
         self.left_frame = tk.Frame(
             main_frame,
             bg="#313244",
-            width=220
+            width=260
         )
 
         self.left_frame.pack(
@@ -134,51 +137,80 @@ class VacuumApp:
         # ALGORITHM VARIABLE
         # =========================
         self.algorithm_var = tk.StringVar()
-
         self.algorithm_var.set("DFS 1")
 
-        algorithms = [
-            "DFS 1",
-            "DFS 2",
-            "BFS 1",
-            "BFS 2",
-            "UCS",
-            "Greedy",
-            "A*",
-            "IDA*",
-            "Simple Hill Climb",
-            "Steepest Ascent Hill Climbing",
-            "Stochastic Ascent Hill Climbing",
-            "Local Beam Search"
-        ]
+        categories = {
+            "🔍 Graph Search (Tìm kiếm mù)": [
+                "DFS 1",
+                "DFS 2",
+                "BFS 1",
+                "BFS 2",
+                "UCS"
+            ],
+            "💡 Heuristic Search (Informed)": [
+                "Greedy",
+                "A*",
+                "IDA*"
+            ],
+            "⛰️ Local Search (Tối ưu cục bộ)": [
+                "Simple Hill Climb",
+                "Steepest Ascent Hill Climbing",
+                "Stochastic Ascent Hill Climbing",
+                "Random Restart Hill Climbing",
+                "Local Beam Search",
+                "Simulated Annealing"
+            ]
+        }
 
         # =========================
-        # RADIO BUTTONS
+        # CATEGORIZED RADIO BUTTONS
         # =========================
-        for algo in algorithms:
-
-            tk.Radiobutton(
+        for cat_name, algos in categories.items():
+            # Category Header
+            cat_label = tk.Label(
                 self.left_frame,
-                text=algo,
-                variable=self.algorithm_var,
-                value=algo,
-                font=("Segoe UI", 12),
+                text=cat_name,
                 bg="#313244",
-                fg="white",
-                activebackground="#313244",
-                activeforeground="white",
-                selectcolor="#45475a"
-            ).pack(
-                anchor="w",
-                padx=20,
-                pady=5
+                fg="#cba6f7",  # Mauve accent color
+                font=("Segoe UI", 10, "bold")
             )
+            cat_label.pack(anchor="w", padx=15, pady=(10, 2))
+
+            for algo in algos:
+                tk.Radiobutton(
+                    self.left_frame,
+                    text=algo,
+                    variable=self.algorithm_var,
+                    value=algo,
+                    font=("Segoe UI", 10),
+                    bg="#313244",
+                    fg="#cdd6f4",
+                    activebackground="#313244",
+                    activeforeground="white",
+                    selectcolor="#45475a",
+                    cursor="hand2"
+                ).pack(
+                    anchor="w",
+                    padx=25,
+                    pady=2
+                )
 
         # =========================
-        # RUN BUTTON
+        # BUTTON CONTAINER (RUN & RESET)
         # =========================
-        self.run_btn = tk.Button(
+        btn_frame = tk.Frame(
             self.left_frame,
+            bg="#313244"
+        )
+        btn_frame.pack(
+            pady=15,
+            padx=15,
+            fill="x"
+        )
+
+        # RUN BUTTON
+        self.run_btn = tk.Button(
+            btn_frame,
             text="▶ RUN",
             command=self.run_algorithm,
             font=("Segoe UI", 11, "bold"),
@@ -189,13 +221,13 @@ class VacuumApp:
             relief="flat",
             bd=0,
             cursor="hand2",
-            pady=8
+            pady=10
         )
-
         self.run_btn.pack(
-            pady=20,
-            padx=15,
-            fill="x"
+            side="left",
+            fill="x",
+            expand=True,
+            padx=(0, 5)
         )
 
         def on_enter_run(e):
@@ -207,11 +239,9 @@ class VacuumApp:
         self.run_btn.bind("<Enter>", on_enter_run)
         self.run_btn.bind("<Leave>", on_leave_run)
 
-        # =========================
         # RESET BUTTON
-        # =========================
         self.reset_btn = tk.Button(
-            self.left_frame,
+            btn_frame,
             text="⟳ RESET",
             command=self.reset_app,
             font=("Segoe UI", 11, "bold"),
@@ -222,13 +252,13 @@ class VacuumApp:
             relief="flat",
             bd=0,
             cursor="hand2",
-            pady=8
+            pady=10
         )
-
         self.reset_btn.pack(
-            pady=10,
-            padx=15,
-            fill="x"
+            side="left",
+            fill="x",
+            expand=True,
+            padx=(5, 0)
         )
 
         def on_enter_reset(e):
@@ -436,7 +466,9 @@ class VacuumApp:
             "Simple Hill Climb": simple_hill_climb_vacuum,
             "Steepest Ascent Hill Climbing": steepest_ascent_hill_climbing,
             "Stochastic Ascent Hill Climbing": stochastic_ascent_hill_climbing,
-            "Local Beam Search": local_beam_search
+            "Random Restart Hill Climbing": random_restart_hill_climbing,
+            "Local Beam Search": local_beam_search,
+            "Simulated Annealing": simulated_annealing
         }
 
         self.vaccum_logic = algorithms[selected]()
