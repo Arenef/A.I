@@ -1,7 +1,4 @@
-# 🧹 AppVacuum
-
 <h1 align="center">Artificial Intelligence Search Algorithms Visualization</h1>
-
 <p align="center">
 Visualization of classical Artificial Intelligence search algorithms in the Vacuum Cleaner World.
 </p>
