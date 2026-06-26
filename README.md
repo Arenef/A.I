@@ -22,7 +22,7 @@ Student ID: <b>24110241</b>
 # 🎬 Algorithm Demonstrations
 # 🧹 AppVacuum
 # 🔹 Uninformed Search
-
+Các thuật toán tìm kiếm cơ bản không sử dụng thông tin về khoảng cách hay chi phí tới mục tiêu. Thuật toán chỉ duyệt qua các trạng thái dựa trên cấu trúc đồ thị của môi trường Vacuum World để tìm đường đi.
 ## 🌲 Depth First Search (DFS)
 
 | DFS Example 1 | DFS Example 2 |
@@ -56,7 +56,7 @@ Student ID: <b>24110241</b>
 ---
 
 # 🤖 Informed Search
-
+Nhóm thuật toán tối ưu hơn nhờ sử dụng hàm Heuristic ước lượng khoảng cách từ trạng thái hiện tại đến cái đích cần dọn dẹp. Giúp Robot hút bụi định hướng thông minh hơn, giảm thiểu số bước duyệt thừa.
 ## ⭐ A* Search
 
 <p align="center">
@@ -82,7 +82,7 @@ Student ID: <b>24110241</b>
 ---
 
 # ⛰️ Local Search
-
+Nhóm thuật toán tập trung vào việc cải tiến trạng thái hiện tại bằng cách di chuyển sang các trạng thái lân cận tốt hơn. Phù hợp cho việc tối ưu hóa lộ trình trực tiếp mà không cần lưu trữ toàn bộ cây tìm kiếm.
 ## 📈 Simple Hill Climbing
 
 <p align="center">
@@ -133,6 +133,7 @@ Student ID: <b>24110241</b>
 
 # 🧩 Complex Vacuum World
 
+Mô phỏng các kịch bản nâng cao và thực tế hơn của Robot hút bụi khi đối mặt với môi trường không chắc chắn, không thể quan sát toàn diện hoặc có các yếu tố ngẫu nhiên xảy ra.
 ## 🌳 AND-OR Search
 
 <p align="center">
@@ -192,6 +193,7 @@ Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho
 ---
 
 # ❌ Adversarial Search (Tic-Tac-Toe)
+Mô phỏng các thuật toán tìm kiếm đối kháng thông qua trò chơi **Cờ ca-rô (Tic-Tac-Toe)**. Trực quan hóa luồng tư duy, số lượng trạng thái phải duyệt và khả năng cắt tỉa của AI khi đối đầu với người chơi hoặc một AI khác.
 ## 🪵 Minimax Algorithm
 
 <p align="center">
