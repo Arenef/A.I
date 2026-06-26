@@ -1,11 +1,6 @@
-# App 
-
 import tkinter as tk
 from tkinter import ttk
 
-# =========================
-# IMPORT ALGORITHMS
-# =========================
 from dfs_vacuum_1 import dfs_vacuum_1
 from dfs_vacuum_2 import dfs_vacuum_2
 from bfs_vaccum_1 import bfs_vacuum_1
@@ -20,6 +15,10 @@ from stochastic_hill_climbing import stochastic_ascent_hill_climbing
 from local_beam_search import local_beam_search
 from random_restart_hill_climbing import random_restart_hill_climbing
 from simulated_annealing import simulated_annealing
+from ids_vacuum import ids_vacuum
+from and_or_search_vacuum import and_or_search_vacuum
+from partially_observable_vacuum import partially_observable_vacuum
+from belief_state_search_vacuum import belief_state_search_vacuum
 
 class VacuumApp:
 
@@ -29,13 +28,10 @@ class VacuumApp:
 
         self.root.title("Vacuum Cleaner AI")
 
-        self.root.geometry("1100x650")
+        self.root.geometry("1100x750")
 
         self.root.configure(bg="#1e1e2e")
 
-        # =========================
-        # VARIABLES
-        # =========================
         self.vaccum_logic = None
 
         self.path = []
@@ -44,28 +40,27 @@ class VacuumApp:
 
         self.is_running = False
 
-        # =========================
-        # SETUP
-        # =========================
+        self.search_path = []
+
+        self.solution_path = []
+
+        self.solution_idx = 0
+
+        self.animation_phase = "search"
+
+        self.speed_var = tk.IntVar()
+        self.speed_var.set(500)
+
         self.setup_style()
 
         self.setup_ui()
 
-        # =========================
-        # LOAD DEFAULT ALGORITHM
-        # =========================
         self.load_algorithm()
 
-        # =========================
-        # DRAW DEFAULT MAP
-        # =========================
         self.draw_grid(
             self.vaccum_logic.start
         )
 
-    # =========================
-    # STYLE
-    # =========================
     def setup_style(self):
 
         self.style = ttk.Style()
@@ -78,14 +73,23 @@ class VacuumApp:
             padding=10
         )
 
-    # =========================
-    # UI
-    # =========================
+        self.style.configure(
+            "TCombobox",
+            font=("Segoe UI", 10),
+            fieldbackground="#181825",
+            background="#313244",
+            foreground="white",
+            arrowcolor="white",
+            bordercolor="#45475a"
+        )
+        self.style.map(
+            "TCombobox",
+            fieldbackground=[("readonly", "#181825")],
+            foreground=[("readonly", "white")]
+        )
+
     def setup_ui(self):
 
-        # =========================
-        # TITLE
-        # =========================
         title = tk.Label(
             self.root,
             text="🤖 Vacuum Cleaner AI",
@@ -96,9 +100,6 @@ class VacuumApp:
 
         title.pack(pady=10)
 
-        # =========================
-        # MAIN FRAME
-        # =========================
         main_frame = tk.Frame(
             self.root,
             bg="#1e1e2e"
@@ -109,13 +110,10 @@ class VacuumApp:
             expand=True
         )
 
-        # ==================================================
-        # LEFT PANEL
-        # ==================================================
         self.left_frame = tk.Frame(
             main_frame,
             bg="#313244",
-            width=260
+            width=300
         )
 
         self.left_frame.pack(
@@ -127,93 +125,27 @@ class VacuumApp:
 
         tk.Label(
             self.left_frame,
-            text="Thuật toán",
+            text="Điều khiển",
             bg="#313244",
             fg="white",
             font=("Segoe UI", 15, "bold")
-        ).pack(pady=15)
+        ).pack(pady=(15, 5))
 
-        # =========================
-        # ALGORITHM VARIABLE
-        # =========================
-        self.algorithm_var = tk.StringVar()
-        self.algorithm_var.set("DFS 1")
-
-        categories = {
-            "🔍 Graph Search (Tìm kiếm mù)": [
-                "DFS 1",
-                "DFS 2",
-                "BFS 1",
-                "BFS 2",
-                "UCS"
-            ],
-            "💡 Heuristic Search (Informed)": [
-                "Greedy",
-                "A*",
-                "IDA*"
-            ],
-            "⛰️ Local Search (Tối ưu cục bộ)": [
-                "Simple Hill Climb",
-                "Steepest Ascent Hill Climbing",
-                "Stochastic Ascent Hill Climbing",
-                "Random Restart Hill Climbing",
-                "Local Beam Search",
-                "Simulated Annealing"
-            ]
-        }
-
-        # =========================
-        # CATEGORIZED RADIO BUTTONS
-        # =========================
-        for cat_name, algos in categories.items():
-            # Category Header
-            cat_label = tk.Label(
-                self.left_frame,
-                text=cat_name,
-                bg="#313244",
-                fg="#cba6f7",  # Mauve accent color
-                font=("Segoe UI", 10, "bold")
-            )
-            cat_label.pack(anchor="w", padx=15, pady=(10, 2))
-
-            for algo in algos:
-                tk.Radiobutton(
-                    self.left_frame,
-                    text=algo,
-                    variable=self.algorithm_var,
-                    value=algo,
-                    font=("Segoe UI", 10),
-                    bg="#313244",
-                    fg="#cdd6f4",
-                    activebackground="#313244",
-                    activeforeground="white",
-                    selectcolor="#45475a",
-                    cursor="hand2"
-                ).pack(
-                    anchor="w",
-                    padx=25,
-                    pady=2
-                )
-
-        # =========================
-        # BUTTON CONTAINER (RUN & RESET)
-        # =========================
         btn_frame = tk.Frame(
             self.left_frame,
             bg="#313244"
         )
         btn_frame.pack(
-            pady=15,
+            pady=10,
             padx=15,
             fill="x"
         )
 
-        # RUN BUTTON
         self.run_btn = tk.Button(
             btn_frame,
             text="▶ RUN",
             command=self.run_algorithm,
-            font=("Segoe UI", 11, "bold"),
+            font=("Segoe UI", 9, "bold"),
             bg="#a6e3a1",
             fg="#11111b",
             activebackground="#94e2d5",
@@ -227,7 +159,7 @@ class VacuumApp:
             side="left",
             fill="x",
             expand=True,
-            padx=(0, 5)
+            padx=(0, 2)
         )
 
         def on_enter_run(e):
@@ -239,12 +171,41 @@ class VacuumApp:
         self.run_btn.bind("<Enter>", on_enter_run)
         self.run_btn.bind("<Leave>", on_leave_run)
 
-        # RESET BUTTON
+        self.show_path_btn = tk.Button(
+            btn_frame,
+            text="▶ SHOW PATH",
+            command=self.run_solution_only,
+            font=("Segoe UI", 9, "bold"),
+            bg="#f9e2af",
+            fg="#11111b",
+            activebackground="#eba0ac",
+            activeforeground="#11111b",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            pady=10
+        )
+        self.show_path_btn.pack(
+            side="left",
+            fill="x",
+            expand=True,
+            padx=(2, 2)
+        )
+
+        def on_enter_show_path(e):
+            self.show_path_btn.config(bg="#f2cdcd", fg="#11111b")
+
+        def on_leave_show_path(e):
+            self.show_path_btn.config(bg="#f9e2af", fg="#11111b")
+
+        self.show_path_btn.bind("<Enter>", on_enter_show_path)
+        self.show_path_btn.bind("<Leave>", on_leave_show_path)
+
         self.reset_btn = tk.Button(
             btn_frame,
             text="⟳ RESET",
             command=self.reset_app,
-            font=("Segoe UI", 11, "bold"),
+            font=("Segoe UI", 9, "bold"),
             bg="#f38ba8",
             fg="#11111b",
             activebackground="#eba0ac",
@@ -258,7 +219,7 @@ class VacuumApp:
             side="left",
             fill="x",
             expand=True,
-            padx=(5, 0)
+            padx=(2, 0)
         )
 
         def on_enter_reset(e):
@@ -270,9 +231,100 @@ class VacuumApp:
         self.reset_btn.bind("<Enter>", on_enter_reset)
         self.reset_btn.bind("<Leave>", on_leave_reset)
 
-        # ==================================================
-        # CENTER PANEL
-        # ==================================================
+        speed_frame = tk.Frame(
+            self.left_frame,
+            bg="#313244"
+        )
+        speed_frame.pack(
+            pady=10,
+            padx=15,
+            fill="x"
+        )
+
+        self.speed_label = tk.Label(
+            speed_frame,
+            text="Tốc độ: 500 ms",
+            bg="#313244",
+            fg="white",
+            font=("Segoe UI", 10, "bold")
+        )
+        self.speed_label.pack(anchor="w", pady=(0, 5))
+
+        self.speed_scale = tk.Scale(
+            speed_frame,
+            from_=50,
+            to=2000,
+            orient="horizontal",
+            variable=self.speed_var,
+            bg="#313244",
+            fg="white",
+            troughcolor="#181825",
+            activebackground="#cba6f7",
+            highlightthickness=0,
+            bd=0,
+            showvalue=False,
+            command=self.update_speed_label
+        )
+        self.speed_scale.pack(fill="x")
+
+        tk.Label(
+            self.left_frame,
+            text="Thuật toán",
+            bg="#313244",
+            fg="white",
+            font=("Segoe UI", 15, "bold")
+        ).pack(pady=(20, 5))
+
+        self.category_var = tk.StringVar()
+        self.category_var.set("Uninformed Search")
+
+        self.algorithm_var = tk.StringVar()
+        self.algorithm_var.set("DFS 1")
+
+        self.algo_categories = {
+            "Uninformed Search": ["DFS 1", "DFS 2", "BFS 1", "BFS 2", "UCS", "IDS"],
+            "Informed Search": ["Greedy", "A*", "IDA*"],
+            "Local Search": ["Simple Hill Climb", "Steepest Ascent Hill Climbing", "Stochastic Ascent Hill Climbing", 
+                            "Random Restart Hill Climbing", "Local Beam Search", "Simulated Annealing"],
+            "Complex Environment": ["AND-OR Search", "Partially Observable Vacuum", "Belief State Search"]
+        }
+
+        tk.Label(
+            self.left_frame,
+            text="Nhóm thuật toán:",
+            bg="#313244",
+            fg="#cba6f7",
+            font=("Segoe UI", 10, "bold")
+        ).pack(anchor="w", padx=15, pady=(5, 2))
+
+        self.cat_combobox = ttk.Combobox(
+            self.left_frame,
+            textvariable=self.category_var,
+            values=list(self.algo_categories.keys()),
+            state="readonly",
+            font=("Segoe UI", 10)
+        )
+        self.cat_combobox.pack(fill="x", padx=15, pady=(0, 10))
+        self.cat_combobox.bind("<<ComboboxSelected>>", self.on_category_changed)
+
+        tk.Label(
+            self.left_frame,
+            text="Thuật toán:",
+            bg="#313244",
+            fg="#cba6f7",
+            font=("Segoe UI", 10, "bold")
+        ).pack(anchor="w", padx=15, pady=(5, 2))
+
+        self.algo_combobox = ttk.Combobox(
+            self.left_frame,
+            textvariable=self.algorithm_var,
+            values=self.algo_categories["Uninformed Search"],
+            state="readonly",
+            font=("Segoe UI", 10)
+        )
+        self.algo_combobox.pack(fill="x", padx=15, pady=(0, 10))
+        self.algo_combobox.bind("<<ComboboxSelected>>", self.on_algo_changed)
+
         self.center_frame = tk.Frame(
             main_frame,
             bg="#1e1e2e"
@@ -284,9 +336,6 @@ class VacuumApp:
             expand=True
         )
 
-        # =========================
-        # GRID CANVAS
-        # =========================
         self.canvas = tk.Canvas(
             self.center_frame,
             width=500,
@@ -297,9 +346,6 @@ class VacuumApp:
 
         self.canvas.pack(pady=20)
 
-        # =========================
-        # STATUS LABEL
-        # =========================
         self.status_label = tk.Label(
             self.center_frame,
             text="Trạng thái: Sẵn sàng",
@@ -310,9 +356,6 @@ class VacuumApp:
 
         self.status_label.pack()
 
-        # =========================
-        # PROGRESS BAR
-        # =========================
         self.progress = ttk.Progressbar(
             self.center_frame,
             length=400,
@@ -321,9 +364,6 @@ class VacuumApp:
 
         self.progress.pack(pady=15)
 
-        # ==================================================
-        # SOLUTION FRAME
-        # ==================================================
         solution_frame = tk.Frame(
             self.center_frame,
             bg="#1e1e2e"
@@ -343,9 +383,6 @@ class VacuumApp:
             font=("Segoe UI", 12, "bold")
         ).pack(anchor="w")
 
-        # =========================
-        # CONTAINER
-        # =========================
         solution_container = tk.Frame(
             solution_frame,
             bg="#313244",
@@ -357,9 +394,6 @@ class VacuumApp:
             pady=5
         )
 
-        # =========================
-        # SCROLLBAR
-        # =========================
         self.solution_scroll = tk.Scrollbar(
             solution_container,
             orient="horizontal"
@@ -370,9 +404,6 @@ class VacuumApp:
             fill="x"
         )
 
-        # =========================
-        # SOLUTION CANVAS
-        # =========================
         self.solution_canvas = tk.Canvas(
             solution_container,
             bg="#181825",
@@ -392,9 +423,6 @@ class VacuumApp:
             command=self.solution_canvas.xview
         )
 
-        # =========================
-        # TEXT
-        # =========================
         self.solution_text = self.solution_canvas.create_text(
             10,
             22,
@@ -404,9 +432,6 @@ class VacuumApp:
             font=("Consolas", 11, "bold")
         )
 
-        # ==================================================
-        # RIGHT PANEL
-        # ==================================================
         self.right_frame = tk.Frame(
             main_frame,
             bg="#313244",
@@ -428,9 +453,6 @@ class VacuumApp:
             font=("Segoe UI", 15, "bold")
         ).pack(pady=10)
 
-        # =========================
-        # LOG TEXT
-        # =========================
         self.log_text = tk.Text(
             self.right_frame,
             bg="#181825",
@@ -445,9 +467,35 @@ class VacuumApp:
             pady=10
         )
 
-    # =========================
-    # LOAD ALGORITHM
-    # =========================
+    def update_speed_label(self, val):
+        self.speed_label.config(text=f"Tốc độ: {val} ms")
+
+    def get_speed(self):
+        try:
+            val = self.speed_var.get()
+            if val < 10:
+                val = 10
+            return val
+        except (tk.TclError, ValueError):
+            return 500
+
+    def on_algo_changed(self, event=None):
+        self.load_algorithm()
+        if self.vaccum_logic:
+            self.draw_grid(self.vaccum_logic.start)
+            self.status_label.config(text="Trạng thái: Sẵn sàng")
+            self.progress["value"] = 0
+            self.solution_canvas.itemconfig(self.solution_text, text="Chưa có")
+            self.solution_canvas.config(scrollregion=(0, 0, 0, 0))
+
+    def on_category_changed(self, event=None):
+        cat = self.category_var.get()
+        algos = self.algo_categories.get(cat, [])
+        self.algo_combobox.config(values=algos)
+        if algos:
+            self.algorithm_var.set(algos[0])
+            self.on_algo_changed()
+
     def load_algorithm(self):
 
         selected = self.algorithm_var.get()
@@ -460,6 +508,7 @@ class VacuumApp:
             "BFS 1": bfs_vacuum_1,
             "BFS 2": bfs_vacuum_2,
             "UCS": ucs_vacuum,
+            "IDS": ids_vacuum,
             "Greedy": greedy_vacuum,
             "A*": a_star_vacuum,
             "IDA*": ida_star_vacuum,
@@ -468,23 +517,32 @@ class VacuumApp:
             "Stochastic Ascent Hill Climbing": stochastic_ascent_hill_climbing,
             "Random Restart Hill Climbing": random_restart_hill_climbing,
             "Local Beam Search": local_beam_search,
-            "Simulated Annealing": simulated_annealing
+            "Simulated Annealing": simulated_annealing,
+            "AND-OR Search": and_or_search_vacuum,
+            "Partially Observable Vacuum": partially_observable_vacuum,
+            "Belief State Search": belief_state_search_vacuum
         }
 
         self.vaccum_logic = algorithms[selected]()
 
         print(self.vaccum_logic.start)
 
-    # =========================
-    # DRAW GRID
-    # =========================
     def draw_grid(self, matrix):
 
         self.canvas.delete("all")
 
-        rows = len(matrix)
+        is_belief = False
+        if isinstance(matrix, (list, tuple)) and len(matrix) > 0:
+            if isinstance(matrix[0], (list, tuple)) and len(matrix[0]) > 0:
+                if isinstance(matrix[0][0], (list, tuple)):
+                    is_belief = True
 
-        cols = len(matrix[0])
+        if is_belief:
+            rows = len(matrix[0])
+            cols = len(matrix[0][0])
+        else:
+            rows = len(matrix)
+            cols = len(matrix[0])
 
         cell_size = 500 // cols
 
@@ -498,18 +556,30 @@ class VacuumApp:
                 x2 = x1 + cell_size
                 y2 = y1 + cell_size
 
-                value = matrix[i][j]
+                if is_belief:
+                    values = {state[i][j] for state in matrix}
+                else:
+                    values = {matrix[i][j]}
 
                 color = "#cdd6f4"
+                text_emoji = ""
 
-                if value == 1:
-                    color = "#f9e2af"
-
-                elif value == 2:
-                    color = "#f38ba8"
-                
-                elif value == -1:
+                if -1 in values:
                     color = "#45475a"
+                    text_emoji = "⬛"
+                elif 2 in values:
+                    if is_belief:
+                        color = "#cba6f7"
+                        text_emoji = "🤖" if len(values) == 1 else "🤖?"
+                    else:
+                        color = "#f38ba8"
+                        text_emoji = "🤖"
+                elif 1 in values:
+                    color = "#f9e2af"
+                    if is_belief:
+                        text_emoji = "🟤" if len(values) == 1 else "🟤?"
+                    else:
+                        text_emoji = "🟤"
 
                 self.canvas.create_rectangle(
                     x1,
@@ -521,36 +591,15 @@ class VacuumApp:
                     width=3
                 )
 
-                if value == 1:
-
+                if text_emoji:
+                    font_size = 24 if "?" in text_emoji else 28
                     self.canvas.create_text(
                         x1 + cell_size // 2,
                         y1 + cell_size // 2,
-                        text="🟤",
-                        font=("Arial", 28)
+                        text=text_emoji,
+                        font=("Arial", font_size)
                     )
 
-                elif value == 2:
-
-                    self.canvas.create_text(
-                        x1 + cell_size // 2,
-                        y1 + cell_size // 2,
-                        text="🤖",
-                        font=("Arial", 28)
-                    )
-                
-                elif value == -1:
-
-                    self.canvas.create_text(
-                        x1 + cell_size // 2,
-                        y1 + cell_size // 2,
-                        text="⬛",
-                        font=("Arial", 28)
-                    )
-
-    # =========================
-    # LOG
-    # =========================
     def log(self, message):
 
         self.log_text.insert(
@@ -560,19 +609,37 @@ class VacuumApp:
 
         self.log_text.see(tk.END)
 
-    # =========================
-    # RUN
-    # =========================
     def analyze_matrix(self, matrix):
-        robot_pos = (0, 0)
-        dirt_count = 0
-        for i in range(len(matrix)):
-            for j in range(len(matrix[0])):
-                if matrix[i][j] == 2:
-                    robot_pos = (i, j)
-                elif matrix[i][j] == 1:
-                    dirt_count += 1
-        return robot_pos, dirt_count
+        is_belief = False
+        if isinstance(matrix, (list, tuple)) and len(matrix) > 0:
+            if isinstance(matrix[0], (list, tuple)) and len(matrix[0]) > 0:
+                if isinstance(matrix[0][0], (list, tuple)):
+                    is_belief = True
+
+        if is_belief:
+            robot_positions = set()
+            dirt_positions = set()
+            for state in matrix:
+                for i in range(len(state)):
+                    for j in range(len(state[0])):
+                        if state[i][j] == 2:
+                            robot_positions.add((i, j))
+                        elif state[i][j] == 1:
+                            dirt_positions.add((i, j))
+            r_pos = sorted(list(robot_positions))
+            if len(r_pos) == 1:
+                r_pos = r_pos[0]
+            return r_pos, len(dirt_positions)
+        else:
+            robot_pos = (0, 0)
+            dirt_count = 0
+            for i in range(len(matrix)):
+                for j in range(len(matrix[0])):
+                    if matrix[i][j] == 2:
+                        robot_pos = (i, j)
+                    elif matrix[i][j] == 1:
+                        dirt_count += 1
+            return robot_pos, dirt_count
 
     def run_algorithm(self):
 
@@ -590,129 +657,191 @@ class VacuumApp:
 
         node = self.vaccum_logic.solve()
 
-        if node is None:
+        self.log_text.delete("1.0", tk.END)
 
-            self.log("❌ Không tìm thấy lời giải!")
-
-            self.status_label.config(
-                text="Không tìm thấy lời giải"
-            )
-
-            return
-
-        self.path = self.vaccum_logic.get_path(node)
-
-        # Log initial simulation start data
-        start_matrix = self.path[0][0]
-        robot_pos, dirt_count = self.analyze_matrix(start_matrix)
-        
         self.log(f"🤖 [KHỞI CHẠY] Thuật toán: {self.algorithm_var.get()}")
-        self.log(f"📍 Vị trí bắt đầu: {robot_pos}")
-        self.log(f"🟤 Số lượng rác ban đầu: {dirt_count}")
-        self.log(f"⚡ Tổng số hành động dự kiến: {len(self.path) - 1}")
         self.log("-" * 35)
+        self.log("🔍 QUÁ TRÌNH TÌM KIẾM (FRONTIER - TỪNG BƯỚC):")
 
-        self.draw_grid(
-            self.path[0][0]
-        )
-
-        actions = [
-
-            step[1]
-
-            for step in self.path
-
-            if step[1] != "START"
-        ]
-
-        solution = "  ➜  ".join(actions)
+        if node is not None:
+            path = self.vaccum_logic.get_path(node)
+            actions = [
+                step[1]
+                for step in path
+                if step[1] != "START"
+            ]
+            solution = "  ➜  ".join(actions)
+            self.solution_path = path
+        else:
+            solution = "Không tìm thấy lời giải"
+            self.solution_path = []
 
         self.solution_canvas.itemconfig(
             self.solution_text,
             text=solution
         )
 
-        # UPDATE CANVAS
         self.solution_canvas.update_idletasks()
 
-        # GET TEXT SIZE
         bbox = self.solution_canvas.bbox(self.solution_text)
 
-        # SET SCROLL REGION
         if bbox:
             self.solution_canvas.config(
                 scrollregion=bbox
             )
 
-        self.progress["maximum"] = len(self.path)
-
+        self.search_path = getattr(self.vaccum_logic, 'search_events', [])
+        
+        self.progress["maximum"] = len(self.search_path) + len(self.solution_path)
         self.progress["value"] = 0
-
         self.step_idx = 0
-
+        self.solution_idx = 0
+        self.animation_phase = "search"
         self.is_running = True
-
         self.animate_step()
 
-    # =========================
-    # ANIMATION
-    # =========================
-    def animate_step(self):
+    def run_solution_only(self):
 
-        if self.step_idx < len(self.path):
+        if self.is_running:
+            return
 
-            matrix, action = self.path[self.step_idx]
+        self.load_algorithm()
 
-            self.draw_grid(matrix)
+        if self.vaccum_logic is None:
+            return
 
-            if self.step_idx == 0:
-                # Starting state log
-                self.log(f"🐾 Bước 0: Trạng thái xuất phát")
-            else:
-                # Step simulation metrics
-                robot_pos, dirt_count = self.analyze_matrix(matrix)
-                prev_matrix = self.path[self.step_idx - 1][0]
-                _, prev_dirt = self.analyze_matrix(prev_matrix)
-                
-                self.log(f"🐾 Bước {self.step_idx}: Robot di chuyển [{action.upper()}]")
-                self.log(f"   ➔ Vị trí hiện tại: {robot_pos}")
-                self.log(f"   ➔ Rác còn lại trên bản đồ: {dirt_count}")
-                
-                if prev_dirt > dirt_count:
-                    self.log(f"   ✨ ĐÃ DỌN SẠCH RÁC TẠI VỊ TRÍ {robot_pos}!")
-            
-            self.log("-" * 35)
+        self.status_label.config(
+            text=f"Chạy lời giải {self.algorithm_var.get()}"
+        )
 
-            self.progress["value"] = self.step_idx + 1
+        node = self.vaccum_logic.solve()
 
-            self.step_idx += 1
+        self.log_text.delete("1.0", tk.END)
 
-            self.root.after(
-                500,
-                self.animate_step
+        self.log(f"🤖 [KHỞI CHẠY] Chỉ chạy lời giải: {self.algorithm_var.get()}")
+        self.log("-" * 35)
+
+        if node is not None:
+            path = self.vaccum_logic.get_path(node)
+            actions = [
+                step[1]
+                for step in path
+                if step[1] != "START"
+            ]
+            solution = "  ➜  ".join(actions)
+            self.solution_path = path
+        else:
+            solution = "Không tìm thấy lời giải"
+            self.solution_path = []
+
+        self.solution_canvas.itemconfig(
+            self.solution_text,
+            text=solution
+        )
+
+        self.solution_canvas.update_idletasks()
+
+        bbox = self.solution_canvas.bbox(self.solution_text)
+
+        if bbox:
+            self.solution_canvas.config(
+                scrollregion=bbox
             )
 
+        self.search_path = []
+        
+        self.progress["maximum"] = len(self.solution_path)
+        self.progress["value"] = 0
+        self.step_idx = 0
+        self.solution_idx = 0
+        
+        if self.solution_path:
+            self.log("🐾 BẮT ĐẦU DI CHUYỂN THEO LỜI GIẢI (SOLUTION PATH):")
+            self.log("-" * 35)
+            self.animation_phase = "solution"
+            self.is_running = True
+            self.animate_step()
         else:
-
             self.status_label.config(
                 text="✔ Hoàn thành"
             )
-
-            self.log("🏆 [THÀNH CÔNG] Robot đã hoàn thành dọn sạch rác!")
+            self.log("🏆 [HOÀN THÀNH] Không có lời giải để hiển thị.")
             self.log("=" * 35)
 
-            self.is_running = False
+    def animate_step(self):
 
-    # =========================
-    # RESET
-    # =========================
+        if self.animation_phase == "search":
+            if self.step_idx < len(self.search_path):
+                matrix, log_message = self.search_path[self.step_idx]
+
+                self.draw_grid(matrix)
+                self.log(log_message)
+                self.log("-" * 35)
+
+                self.progress["value"] = self.step_idx + 1
+                self.step_idx += 1
+
+                self.root.after(
+                    self.get_speed(),
+                    self.animate_step
+                )
+            else:
+                if self.solution_path:
+                    self.log("🐾 BẮT ĐẦU DI CHUYỂN THEO LỜI GIẢI (SOLUTION PATH):")
+                    self.log("-" * 35)
+                    self.animation_phase = "solution"
+                    self.solution_idx = 0
+                    self.root.after(
+                        self.get_speed(),
+                        self.animate_step
+                    )
+                else:
+                    self.status_label.config(
+                        text="✔ Hoàn thành"
+                    )
+                    self.log("🏆 [HOÀN THÀNH] Hoàn thành quá trình duyệt tìm kiếm! Không tìm thấy lời giải.")
+                    self.log("=" * 35)
+                    self.is_running = False
+
+        elif self.animation_phase == "solution":
+            if self.solution_idx < len(self.solution_path):
+                matrix, action = self.solution_path[self.solution_idx]
+
+                self.draw_grid(matrix)
+                r_pos, dirt_count = self.analyze_matrix(matrix)
+                if action == "START":
+                    log_message = f"🤖 Bắt đầu hành trình tại: Vị trí {r_pos} (Số vết bẩn ban đầu: {dirt_count})"
+                else:
+                    log_message = f"🐾 Bước {self.solution_idx}: Thực hiện hành động '{action}' -> Vị trí {r_pos} (Còn lại {dirt_count} vết bẩn)"
+                
+                self.log(log_message)
+                self.log("-" * 35)
+
+                self.progress["value"] = len(self.search_path) + self.solution_idx + 1
+                self.solution_idx += 1
+
+                self.root.after(
+                    self.get_speed(),
+                    self.animate_step
+                )
+            else:
+                self.status_label.config(
+                    text="✔ Hoàn thành"
+                )
+                self.log("🏆 [HOÀN THÀNH] Robot đã hoàn thành di chuyển dọn dẹp theo lời giải!")
+                self.log("=" * 35)
+                self.is_running = False
+
     def reset_app(self):
 
         self.is_running = False
 
         self.path = []
-
+        self.search_path = []
+        self.solution_path = []
         self.step_idx = 0
+        self.solution_idx = 0
+        self.animation_phase = "search"
 
         self.log_text.delete(
             "1.0",
@@ -743,9 +872,6 @@ class VacuumApp:
             )
 
 
-# =========================
-# MAIN
-# =========================
 if __name__ == "__main__":
 
     root = tk.Tk()
