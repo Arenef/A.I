@@ -195,6 +195,33 @@ Advanced constraint satisfaction algorithms demonstrated via the **Graph Colorin
 <p align="center">
 <img src="gif/csp/min conflicts.gif" width="700">
 </p>
+
+---
+# 🎮 Adversarial Search (Game Search)
+
+Adversarial search algorithms visualized through the classic game of **Tic-Tac-Toe** (including performance, depth, and pruning analysis).
+
+## 🪵 Minimax Algorithm
+
+<p align="center">
+<img src="gif/game search/minimax.gif" width="700">
+</p>
+
+---
+
+## ✂️ Alpha-Beta Pruning
+
+<p align="center">
+<img src="gif/game search/alpha-beta.gif" width="700">
+</p>
+
+---
+
+## 🎲 Expectimax Search
+
+<p align="center">
+<img src="gif/game search/expectimax.gif" width="700">
+</p>
 # 📚 Algorithms Implemented
 
 | Category | Algorithms |
@@ -202,7 +229,9 @@ Advanced constraint satisfaction algorithms demonstrated via the **Graph Colorin
 | 🔹 Uninformed Search | DFS • BFS • IDS • UCS |
 | 🤖 Informed Search | Greedy Best First Search • A* • IDA* |
 | ⛰️ Local Search | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
-| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |**
+| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |
+| 🎨 Constraint Satisfaction (CSP) | Backtracking • Forward Checking • AC-3 • Min-Conflicts |
+| 🎮 Adversarial Search | Minimax • Alpha-Beta Pruning • Expectimax |
 ---
 <p align="center">
 
