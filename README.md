@@ -26,7 +26,7 @@ Student ID: <b>24110241</b>
 ---
 
 # 🎬 Algorithm Demonstrations
-# AppVacuum
+# 🧹 AppVacuum
 # 🔹 Uninformed Search
 
 ## 🌲 Depth First Search (DFS)
@@ -144,7 +144,7 @@ Advanced search scenarios in the Vacuum Cleaner World.
 ## 🌳 AND-OR Search
 
 <p align="center">
-<img src="gif/complex/and_or_search.gif" width="700">
+<img src="gif/complex/and or search.gif" width="700">
 </p>
 
 ---
@@ -201,7 +201,7 @@ Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho
 
 ---
 
-# ❌ Adversarial Search (Tic-Tac-Toe AI)
+# ❌ Adversarial Search (Tic-Tac-Toe)
 
 Adversarial search algorithms visualized through the classic game of **Tic-Tac-Toe** featuring depth, performance, and cutting-edge analytical metrics.
 
