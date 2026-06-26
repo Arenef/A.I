@@ -23,9 +23,9 @@ class TicTacToeApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Tic-Tac-Toe AI - Comparison Mode")
-        self.root.geometry("850x700")
+        self.root.geometry("1200x700")
         self.root.configure(bg=BG_MAIN)
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
 
         # Game State Variables
         self.human_player = "X"      # Human default
@@ -35,6 +35,13 @@ class TicTacToeApp:
         self.game_over = False
         self.buttons = []
         self.ai_thinking = False     # Guard to prevent clicks during AI's turn
+        self.animation_after_id = None # Track active playback timer
+        self.thinking_steps = []
+        self.current_step_index = 0
+
+        # Animation Settings
+        self.skip_animation = tk.BooleanVar(value=False)
+        self.animation_speed = tk.IntVar(value=150)
         
         # AI Algorithm Variable
         self.selected_algo = "alpha_beta"  # "alpha_beta" or "minimax"
@@ -55,9 +62,10 @@ class TicTacToeApp:
 
     def create_widgets(self):
         """Creates the GUI layout."""
-        # Split root into left (game) and right (logs) panes
-        self.left_pane = tk.Frame(self.root, bg=BG_MAIN)
-        self.left_pane.pack(side="left", fill="both", expand=True)
+        # Split root into left (game) and right (logs & thinking board) panes
+        self.left_pane = tk.Frame(self.root, bg=BG_MAIN, width=420)
+        self.left_pane.pack(side="left", fill="both")
+        self.left_pane.pack_propagate(False)
 
         self.right_pane = tk.Frame(self.root, bg=BG_MAIN)
         self.right_pane.pack(side="right", fill="both", expand=True)
@@ -182,9 +190,12 @@ class TicTacToeApp:
         self.btn_restart.bind("<Enter>", lambda e: self.btn_restart.config(bg=COLOR_BTN_HOVER))
         self.btn_restart.bind("<Leave>", lambda e: self.btn_restart.config(bg=COLOR_BTN))
 
-        # Thinking Log Panel
-        log_panel = tk.Frame(self.right_pane, bg=BG_CARD, bd=0, highlightthickness=1, highlightbackground=COLOR_GRID)
-        log_panel.pack(fill="both", expand=True, padx=(10, 30), pady=(10, 20))
+        # Middle Column (Thinking Log Panel)
+        self.log_pane = tk.Frame(self.right_pane, bg=BG_MAIN)
+        self.log_pane.pack(side="left", fill="both", expand=True)
+
+        log_panel = tk.Frame(self.log_pane, bg=BG_CARD, bd=0, highlightthickness=1, highlightbackground=COLOR_GRID)
+        log_panel.pack(fill="both", expand=True, padx=(10, 10), pady=(10, 20))
 
         log_title = tk.Label(log_panel, text="AI THINKING LOGS / TIẾN TRÌNH SUY NGHĨ", font=self.ui_font, fg=COLOR_MUTED, bg=BG_CARD)
         log_title.pack(anchor="w", padx=15, pady=(6, 4))
@@ -199,6 +210,68 @@ class TicTacToeApp:
         scrollbar = tk.Scrollbar(log_panel, command=self.txt_log.yview, bg=BG_CARD, bd=0, highlightthickness=0)
         scrollbar.pack(side="right", fill="y", padx=(0, 10), pady=(0, 10))
         self.txt_log.config(yscrollcommand=scrollbar.set)
+
+        # Right Column (Thinking Board Panel Frame)
+        self.thinking_pane = tk.Frame(self.right_pane, bg=BG_MAIN, width=320)
+        self.thinking_pane.pack(side="right", fill="both", expand=False, padx=(10, 20), pady=(10, 20))
+        self.thinking_pane.pack_propagate(False)
+
+        tb_panel = tk.Frame(self.thinking_pane, bg=BG_CARD, bd=0, highlightthickness=1, highlightbackground=COLOR_GRID)
+        tb_panel.pack(fill="both", expand=True)
+
+        tb_title = tk.Label(tb_panel, text="AI THOUGHT PROCESS / LUỒNG SUY NGHĨ", font=self.ui_font, fg=COLOR_MUTED, bg=BG_CARD)
+        tb_title.pack(anchor="w", padx=15, pady=(10, 10))
+
+        # Secondary 3x3 grid (read-only labels/buttons for visual process)
+        tb_grid_container = tk.Frame(tb_panel, bg=BG_CARD, padx=5, pady=5)
+        tb_grid_container.pack(pady=5)
+
+        self.thinking_cells = []
+        for i in range(9):
+            row = i // 3
+            col = i % 3
+            cell = tk.Label(
+                tb_grid_container, text="", font=tkfont.Font(family="Segoe UI", size=18, weight="bold"),
+                bg=COLOR_GRID, fg=COLOR_TEXT, width=4, height=1, relief="flat", bd=0
+            )
+            cell.grid(row=row, column=col, padx=4, pady=4)
+            self.thinking_cells.append(cell)
+
+        # Simulation metrics
+        self.lbl_sim_depth = tk.Label(tb_panel, text="Simulation Depth (Độ sâu): -", font=self.subtitle_font, fg=COLOR_TEXT, bg=BG_CARD)
+        self.lbl_sim_depth.pack(anchor="w", padx=15, pady=2)
+
+        self.lbl_sim_score = tk.Label(tb_panel, text="Simulated Score (Điểm thử): -", font=self.subtitle_font, fg=COLOR_TEXT, bg=BG_CARD)
+        self.lbl_sim_score.pack(anchor="w", padx=15, pady=2)
+
+        self.lbl_sim_alpha = tk.Label(tb_panel, text="Alpha: -", font=self.subtitle_font, fg=COLOR_TEXT, bg=BG_CARD)
+        self.lbl_sim_alpha.pack(anchor="w", padx=15, pady=2)
+
+        self.lbl_sim_beta = tk.Label(tb_panel, text="Beta: -", font=self.subtitle_font, fg=COLOR_TEXT, bg=BG_CARD)
+        self.lbl_sim_beta.pack(anchor="w", padx=15, pady=2)
+
+        # Separator line
+        sep = tk.Frame(tb_panel, height=1, bg=COLOR_GRID)
+        sep.pack(fill="x", padx=15, pady=10)
+
+        # Animation Speed Slider
+        speed_label = tk.Label(tb_panel, text="Animation Speed / Tốc độ (ms):", font=self.subtitle_font, fg=COLOR_MUTED, bg=BG_CARD)
+        speed_label.pack(anchor="w", padx=15)
+
+        self.speed_slider = tk.Scale(
+            tb_panel, from_=20, to=1000, orient="horizontal", variable=self.animation_speed,
+            bg=BG_CARD, fg=COLOR_TEXT, highlightthickness=0, troughcolor=COLOR_GRID,
+            activebackground=COLOR_BTN_HOVER, resolution=10, cursor="hand2"
+        )
+        self.speed_slider.pack(fill="x", padx=15, pady=(0, 10))
+
+        # Skip Animation Checkbutton
+        self.chk_skip_anim = tk.Checkbutton(
+            tb_panel, text="Skip Animation (Chạy ngay)", variable=self.skip_animation,
+            font=self.subtitle_font, bg=BG_CARD, fg=COLOR_TEXT, selectcolor=BG_MAIN,
+            activebackground=BG_CARD, activeforeground=COLOR_TEXT, cursor="hand2"
+        )
+        self.chk_skip_anim.pack(anchor="w", padx=15, pady=5)
 
     # --- UI Interactions ---
 
@@ -227,12 +300,16 @@ class TicTacToeApp:
 
     def change_role(self, role):
         """Changes the human player's role (X or O) and restarts the game."""
+        if self.ai_thinking:
+            return
         self.human_player = role
         self.ai_player = "O" if role == "X" else "X"
         self.reset_game()
 
     def change_algo(self, algo):
         """Changes the active AI search algorithm."""
+        if self.ai_thinking:
+            return
         self.selected_algo = algo
         self.update_algo_selector_ui()
         # Reset game on algo change to keep comparison clear
@@ -264,6 +341,7 @@ class TicTacToeApp:
 
     def reset_game(self):
         """Resets the board state and starts a new game."""
+        self.cancel_thinking_animation()
         self.board = [""] * 9
         self.game_over = False
         self.ai_thinking = False
@@ -278,6 +356,16 @@ class TicTacToeApp:
         # Reset UI cells
         for btn in self.buttons:
             btn.config(text="", bg=COLOR_GRID, fg=COLOR_TEXT, state="normal")
+
+        # Reset thinking board cells
+        for cell in self.thinking_cells:
+            cell.config(text="", bg=COLOR_GRID, fg=COLOR_TEXT)
+
+        # Reset simulated metrics
+        self.lbl_sim_depth.config(text="Simulation Depth (Độ sâu): -")
+        self.lbl_sim_score.config(text="Simulated Score (Điểm thử): -")
+        self.lbl_sim_alpha.config(text="Alpha: -")
+        self.lbl_sim_beta.config(text="Beta: -")
 
         self.update_status()
 
@@ -336,38 +424,151 @@ class TicTacToeApp:
         start_time = time.perf_counter()
         
         if self.selected_algo == "minimax":
-            best_index, nodes, logs = minimax.find_best_move(self.board, self.ai_player)
+            best_index, nodes, logs, thinking_steps = minimax.find_best_move(self.board, self.ai_player)
             cuts_text = "N/A (Minimax)"
         elif self.selected_algo == "expectimax":
-            best_index, nodes, logs = expectimax.find_best_move(self.board, self.ai_player)
+            best_index, nodes, logs, thinking_steps = expectimax.find_best_move(self.board, self.ai_player)
             cuts_text = "N/A (Expectimax)"
         else:
-            best_index, nodes, cuts, logs = alpha_beta.find_best_move(self.board, self.ai_player)
+            best_index, nodes, cuts, logs, thinking_steps = alpha_beta.find_best_move(self.board, self.ai_player)
             cuts_text = f"{cuts:,}"
 
         elapsed_ms = (time.perf_counter() - start_time) * 1000
 
-        # Update metrics UI
-        self.lbl_nodes.config(text=f"States Explored (Trạng thái duyệt): {nodes:,}")
-        self.lbl_cuts.config(text=f"Pruning Cuts (Lần cắt tỉa): {cuts_text}")
-        self.lbl_time.config(text=f"Calculation Time (Thời gian chạy): {elapsed_ms:.2f} ms")
+        # If skip animation is checked or we have no thinking steps, execute immediately
+        if self.skip_animation.get() or not thinking_steps:
+            # Update metrics UI
+            self.lbl_nodes.config(text=f"States Explored (Trạng thái duyệt): {nodes:,}")
+            self.lbl_cuts.config(text=f"Pruning Cuts (Lần cắt tỉa): {cuts_text}")
+            self.lbl_time.config(text=f"Calculation Time (Thời gian chạy): {elapsed_ms:.2f} ms")
 
-        # Update Logs UI
+            # Update Logs UI
+            self.clear_logs()
+            if thinking_steps:
+                for step in thinking_steps:
+                    log_line = step.get('log', '')
+                    if log_line:
+                        self.write_log(log_line)
+                self.write_log("-" * 40)
+            for log_line in logs:
+                self.write_log(log_line)
+
+            # Perform the actual move
+            if best_index is not None:
+                self.make_move(best_index, self.ai_player)
+            
+            self.ai_thinking = False
+            
+            # Check game state
+            if not self.check_game_end():
+                # Pass turn to player
+                self.current_turn = self.human_player
+                self.update_status()
+        else:
+            # Start the playback animation
+            self.start_thinking_animation(best_index, thinking_steps, nodes, cuts_text, elapsed_ms, logs)
+
+    # --- Thinking Process Animation ---
+
+    def start_thinking_animation(self, best_index, thinking_steps, final_nodes, final_cuts_text, final_elapsed_ms, final_logs):
+        self.ai_thinking = True
+        self.thinking_steps = thinking_steps
+        self.current_step_index = 0
         self.clear_logs()
-        for log_line in logs:
+        self.write_log("AI Engine: Analyzing possibilities / Đang phân tích...")
+
+        # Store parameters for when the animation completes
+        self.final_best_index = best_index
+        self.final_nodes = final_nodes
+        self.final_cuts_text = final_cuts_text
+        self.final_elapsed_ms = final_elapsed_ms
+        self.final_logs = final_logs
+
+        self.play_next_thinking_step()
+
+    def play_next_thinking_step(self):
+        if not self.ai_thinking:
+            return
+
+        if self.current_step_index >= len(self.thinking_steps):
+            self.complete_thinking_animation()
+            return
+
+        step = self.thinking_steps[self.current_step_index]
+        self.current_step_index += 1
+
+        # 1. Update thinking board cells
+        board_state = step.get('board', [""] * 9)
+        active_move = step.get('move', None)
+        
+        for idx in range(9):
+            val = board_state[idx]
+            color = COLOR_X if val == "X" else COLOR_O
+            self.thinking_cells[idx].config(text=val, fg=color)
+            
+            if idx == active_move:
+                self.thinking_cells[idx].config(bg=COLOR_HOVER)
+            else:
+                self.thinking_cells[idx].config(bg=COLOR_GRID)
+
+        # 2. Update metrics
+        self.lbl_sim_depth.config(text=f"Simulation Depth (Độ sâu): {step.get('depth', '-')}")
+        
+        score_val = step.get('score', None)
+        if score_val is not None:
+            if isinstance(score_val, float):
+                self.lbl_sim_score.config(text=f"Simulated Score (Điểm thử): {score_val:.2f}")
+            else:
+                self.lbl_sim_score.config(text=f"Simulated Score (Điểm thử): {score_val}")
+        else:
+            self.lbl_sim_score.config(text="Simulated Score (Điểm thử): Evaluating...")
+
+        alpha_val = step.get('alpha', None)
+        beta_val = step.get('beta', None)
+        self.lbl_sim_alpha.config(text=f"Alpha: {alpha_val if alpha_val is not None else 'N/A'}")
+        self.lbl_sim_beta.config(text=f"Beta: {beta_val if beta_val is not None else 'N/A'}")
+
+        # 3. Add to logs
+        log_line = step.get('log', '')
+        if log_line:
+            self.write_log(log_line)
+
+        # Schedule next step
+        speed = self.animation_speed.get()
+        self.animation_after_id = self.root.after(speed, self.play_next_thinking_step)
+
+    def complete_thinking_animation(self):
+        # Reset thinking board cell highlights
+        for idx in range(9):
+            self.thinking_cells[idx].config(bg=COLOR_GRID)
+
+        # Update metrics UI
+        self.lbl_nodes.config(text=f"States Explored (Trạng thái duyệt): {self.final_nodes:,}")
+        self.lbl_cuts.config(text=f"Pruning Cuts (Lần cắt tỉa): {self.final_cuts_text}")
+        self.lbl_time.config(text=f"Calculation Time (Thời gian chạy): {self.final_elapsed_ms:.2f} ms")
+
+        # Append final logs rather than clearing
+        self.write_log("-" * 40)
+        for log_line in self.final_logs:
             self.write_log(log_line)
 
         # Perform the actual move
-        if best_index is not None:
-            self.make_move(best_index, self.ai_player)
-        
+        if self.final_best_index is not None:
+            self.make_move(self.final_best_index, self.ai_player)
+
         self.ai_thinking = False
-        
+        self.animation_after_id = None
+
         # Check game state
         if not self.check_game_end():
-            # Pass turn to player
             self.current_turn = self.human_player
             self.update_status()
+
+    def cancel_thinking_animation(self):
+        if self.animation_after_id:
+            self.root.after_cancel(self.animation_after_id)
+            self.animation_after_id = None
+        self.ai_thinking = False
 
     def check_game_end(self):
         """Checks if the game has ended, highlights winning combo if any, and updates status."""
