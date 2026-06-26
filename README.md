@@ -79,7 +79,7 @@ Student ID: <b>24110241</b>
 ## 🚀 Iterative Deepening A* (IDA*)
 
 <p align="center">
-<img src="gif/inform/ida_star.gif" width="700">
+<img src="gif/inform/ida star.gif" width="700">
 </p>
 
 ---
