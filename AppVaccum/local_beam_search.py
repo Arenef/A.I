@@ -95,6 +95,8 @@ class local_beam_search:
         return best_choice_list
 
     def solve(self):
+        self.search_events = []
+        self.search_events.append((self.start_node.state, f"Khởi tạo Beam với node bắt đầu: Vị trí {self.get_location(self.start_node)}, Heuristic: {self.start_node.cost_path}"))
         current_state_set = [self.start_node]
         
         step_limit = 1000
@@ -104,22 +106,31 @@ class local_beam_search:
             steps += 1
             neighbor_states = []
             
+            self.search_events.append((current_state_set[0].state if current_state_set else self.start_node.state, f"\n--- Local Beam Search Lượt thứ {steps} ---"))
             for node in current_state_set:
+                self.search_events.append((node.state, f"Lấy node khỏi Beam để mở rộng: Vị trí {self.get_location(node)}"))
                 moves = self.possible_move(node)
                 for m in moves:
                     new_node = self.act(node, m)
                     neighbor_states.append(new_node)
+                    self.search_events.append((new_node.state, f"  Thêm láng giềng vào frontier: Vị trí {self.get_location(new_node)} qua hành động {m}, Heuristic: {new_node.cost_path}"))
             
             if not neighbor_states:
+                self.search_events.append((self.start_node.state, "Không tìm thấy láng giềng nào. Dừng tìm kiếm."))
                 return None
                 
             for node in neighbor_states:
                 if self.is_goal(node):
+                    self.search_events.append((node.state, f"-> Tìm thấy đích: Vị trí {self.get_location(node)}"))
                     return node
 
             neighbor_states.sort(key=lambda x: x.cost_path)
             
             current_state_set = neighbor_states[:self.k]
+            
+            self.search_events.append((current_state_set[0].state if current_state_set else self.start_node.state, f"Chọn {self.k} node tốt nhất cho Beam tiếp theo:"))
+            for node in current_state_set:
+                self.search_events.append((node.state, f"  -> Node trong Beam: Vị trí {self.get_location(node)}, Heuristic: {node.cost_path}"))
             
         return None
 
