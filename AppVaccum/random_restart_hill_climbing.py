@@ -9,8 +9,8 @@ class Node():
 class random_restart_hill_climbing:
     def __init__(self):
         state = [
-                [2, 1, 1, 1],
-                [0, 0, 0, 1],
+                [2, 0, 1, 1],
+                [1, 1, 1, 1],
                 [0, 0, 0, 1],
                 [0, 0, 0, 1]
             ]
@@ -86,29 +86,37 @@ class random_restart_hill_climbing:
         return best
     
     def solve(self):
-
+        self.search_events = []
         MAX_RESTART = 500
         for i in range(MAX_RESTART):
             current_node = self.start_node
+            self.search_events.append((current_node.state, f"\n--- Lượt Restart thứ {i+1} ---"))
+            self.search_events.append((current_node.state, f"Bắt đầu từ vị trí: {self.get_location(current_node)}, Heuristic: {current_node.cost_path}"))
             
             while True:
 
                 if self.is_goal(current_node):
+                    self.search_events.append((current_node.state, f"  -> Đạt trạng thái đích ở vị trí: {self.get_location(current_node)}"))
                     return current_node
 
                 frontier = []
                 move = self.possible_move(current_node)
+                self.search_events.append((current_node.state, f"Lấy node hiện tại xét các láng giềng: Vị trí {self.get_location(current_node)}"))
 
                 for m in move:
                     new_node = self.act(current_node, m)
+                    self.search_events.append((new_node.state, f"  Đang đánh giá láng giềng: Vị trí {self.get_location(new_node)} qua hành động {m}, Heuristic: {new_node.cost_path}"))
                     
                     if new_node.cost_path < current_node.cost_path:
                         frontier.append(new_node)
+                        self.search_events.append((new_node.state, f"  -> Thêm vào frontier láng giềng tốt hơn: Vị trí {self.get_location(new_node)}, Heuristic: {new_node.cost_path}"))
 
                 if len(frontier) == 0:
+                    self.search_events.append((current_node.state, "Frontier trống (Đạt đỉnh cục bộ). Restart..."))
                     break
 
                 current_node = self.best_choice(frontier) 
+                self.search_events.append((current_node.state, f"Lấy node tốt nhất từ frontier láng giềng: Vị trí {self.get_location(current_node)}, Heuristic: {current_node.cost_path}"))
         return None
     
     def matrix_to_tuple(self, matrix):
