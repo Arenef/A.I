@@ -26,7 +26,7 @@ Student ID: <b>24110241</b>
 ---
 
 # 🎬 Algorithm Demonstrations
-
+# AppVacuum
 # 🔹 Uninformed Search
 
 ## 🌲 Depth First Search (DFS)
