@@ -127,24 +127,29 @@ class partially_observable_vacuum:
         return all(state in self.goals for state in node.state)
     
     def solve(self):
+        self.search_events = []
         start_node = self.frontier[0]
+        self.search_events.append((start_node.state, f"Khởi đầu Belief State có {len(start_node.state)} trạng thái khả thi."))
         if self.is_goal(start_node):
             return start_node
 
         while self.frontier:
-            node = self.frontier.popleft()
+            node = self.frontier.pop()
+            self.search_events.append((node.state, f"Lấy Belief State khỏi frontier. Kích thước: {len(node.state)}, Hành động trước: {node.act}"))
             move = self.possible_move(node)
 
             for m in move:
                 new_node = self.act(node, m)
 
                 if self.is_goal(new_node):
+                    self.search_events.append((new_node.state, f"Tìm thấy đích! Belief State: {len(new_node.state)} trạng thái khả thi."))
                     return new_node
 
                 state_tuple = self.matrix_to_tuple(new_node.state)
                 if state_tuple not in self.reached:
                     self.reached.add(state_tuple)
                     self.frontier.append(new_node)
+                    self.search_events.append((new_node.state, f"Thêm Belief State vào frontier. Hành động: {m}, Kích thước: {len(new_node.state)}"))
         return None
     
     def matrix_to_tuple(self, belief_state):
