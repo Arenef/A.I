@@ -12,9 +12,9 @@ class bfs_vacuum_1:
         self.frontier = deque()
         state =[
                 [0, 0, 1, 1],
-                [0, 2, -1, 1],
-                [1, -1, 1, 1],
-                [1, 0, 0, 1]]
+                [0, 2, -1, 0],
+                [1, -1, 0, 0],
+                [0, 0, 0, 1]]
         self.start = state
         start_node = Node(state, None, "START", 0)
         self.frontier.append(start_node)
@@ -71,9 +71,14 @@ class bfs_vacuum_1:
         return True
     
     def solve(self):
+        self.search_events = []
+        start_node = self.frontier[0] if self.frontier else None
+        if start_node:
+            self.search_events.append((start_node.state, f"Thêm node khởi đầu vào frontier: Vị trí {self.get_location(start_node)}, Cost: 0"))
 
         while self.frontier:
             node = self.frontier.popleft()
+            self.search_events.append((node.state, f"Lấy node khỏi frontier: Vị trí {self.get_location(node)}, Hành động: {node.act}, Cost: {node.cost_path}"))
 
             if self.is_goal(node):
                 return node
@@ -86,6 +91,7 @@ class bfs_vacuum_1:
                 if self.matrix_to_tuple(new_node.state) not in self.reached:
                     self.reached.add(self.matrix_to_tuple(new_node.state))
                     self.frontier.append(new_node)
+                    self.search_events.append((new_node.state, f"Thêm node vào frontier: Vị trí {self.get_location(new_node)}, Hành động: {new_node.act}, Cost: {new_node.cost_path}"))
         return None
     
     def matrix_to_tuple(self, matrix):
