@@ -88,20 +88,24 @@ class and_or_search_vacuum:
 
     def solve(self):
         self.memo = {}
+        self.search_events = []
         plan = self.or_search(self.start, [])
         return plan
 
     def or_search(self, state, path):
+        x, y = self.get_location(state)
+        self.search_events.append((state, f"OR Search: duyệt trạng thái. Vị trí robot: {(x, y)}"))
         if self.is_goal_state(state):
             return []
         if state in path:
-            return "cycle"
+            self.search_events.append((state, f"🚨 🔴 [PHÁT HIỆN VÒNG LẶP - CYCLE DETECTED] Vòng lặp xuất hiện tại vị trí {(x, y)}! Quay lui."))
+            return None
         if state in self.memo:
             return self.memo[state]
 
         for action in self.possible_move(state):
             result_states = self.results(state, action)
-            plan = self.and_search(result_states, path + [state])
+            plan = self.and_search(result_states, state, path + [state])
             if plan is not None:
                 self.memo[state] = [action, plan]
                 return [action, plan]
@@ -109,9 +113,13 @@ class and_or_search_vacuum:
         self.memo[state] = None
         return None
 
-    def and_search(self, states, path):
+    def and_search(self, states, parent_state, path):
         plans = {}
         for s in states:
+            if s == parent_state:
+                continue
+            x, y = self.get_location(s)
+            self.search_events.append((s, f"AND Search: nhánh kết quả khả thi tại vị trí {(x, y)}"))
             plan_s = self.or_search(s, path)
             if plan_s is None:
                 return None
