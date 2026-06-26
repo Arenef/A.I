@@ -162,6 +162,39 @@ Advanced search scenarios in the Vacuum Cleaner World.
 </p>
 
 ---
+# 🎨 Constraint Satisfaction Problems (CSP)
+
+Advanced constraint satisfaction algorithms demonstrated via the **Graph Coloring** problem (specifically mapping districts of Ho Chi Minh City).
+
+## ↩️ Backtracking Search
+
+<p align="center">
+<img src="gif/csp/backtracking.gif" width="700">
+</p>
+
+---
+
+## 🔍 Forward Checking
+
+<p align="center">
+<img src="gif/csp/forward checking.gif" width="700">
+</p>
+
+---
+
+## 📐 AC-3 (Arc Consistency)
+
+<p align="center">
+<img src="gif/csp/ac3.gif" width="700">
+</p>
+
+---
+
+## 💥 Min-Conflicts Local Search
+
+<p align="center">
+<img src="gif/csp/min conflicts.gif" width="700">
+</p>
 # 📚 Algorithms Implemented
 
 | Category | Algorithms |
@@ -169,8 +202,8 @@ Advanced search scenarios in the Vacuum Cleaner World.
 | 🔹 Uninformed Search | DFS • BFS • IDS • UCS |
 | 🤖 Informed Search | Greedy Best First Search • A* • IDA* |
 | ⛰️ Local Search | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
-| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |
-
+| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |**
+---
 <p align="center">
 
 ⭐ **If this project helps you, please consider giving it a star!**
