@@ -14,8 +14,6 @@ Student ID: <b>24110241</b>
 ---
 
 # 📑 Table of Contents
-
-- 📌 User Interface
 - 🎬 Algorithm Demonstrations
   - 🔹 Uninformed Search
   - 🤖 Informed Search
@@ -24,15 +22,6 @@ Student ID: <b>24110241</b>
 - ✨ Features
 
 ---
-
-# 📌 User Interface
-
-<p align="center">
-<img src="images/interface.png" width="100%">
-</p>
-
----
-
 # 🎬 Algorithm Demonstrations
 
 # 🔹 Uninformed Search
@@ -65,10 +54,6 @@ Student ID: <b>24110241</b>
 
 <p align="center">
 <img src="gif/uninform/ucs.gif" width="700">
-</p>
-
-<p align="center">
-<img src="gif/uninform/ucs.png" width="85%">
 </p>
 
 ---
