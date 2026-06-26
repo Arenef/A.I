@@ -91,9 +91,14 @@ class a_star_vacuum:
         return True
     
     def solve(self):
+        self.search_events = []
+        start_node = self.frontier[0] if self.frontier else None
+        if start_node:
+            self.search_events.append((start_node.state, f"Thêm node khởi đầu vào frontier: Vị trí {self.get_location(start_node)}, f(n): {start_node.cost_path} (g: {start_node.g}, h: {start_node.cost_path - start_node.g})"))
 
         while self.frontier:
             node = heapq.heappop(self.frontier)
+            self.search_events.append((node.state, f"Lấy node khỏi frontier: Vị trí {self.get_location(node)}, Hành động: {node.act}, f(n): {node.cost_path} (g: {node.g}, h: {node.cost_path - node.g})"))
 
             if self.is_goal(node):
                 return node
@@ -106,6 +111,7 @@ class a_star_vacuum:
                 if self.matrix_to_tuple(new_node.state) not in self.reached:
                     self.reached.add(self.matrix_to_tuple(new_node.state))
                     heapq.heappush(self.frontier, new_node)
+                    self.search_events.append((new_node.state, f"Thêm node vào frontier: Vị trí {self.get_location(new_node)}, Hành động: {new_node.act}, f(n): {new_node.cost_path} (g: {new_node.g}, h: {new_node.cost_path - new_node.g})"))
         return None
     
     def matrix_to_tuple(self, matrix):
