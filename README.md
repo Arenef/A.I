@@ -6,7 +6,6 @@
 </p>
 
 ---
-
 # 📌 Giao diện chương trình
 
 <p align="center">
@@ -48,7 +47,7 @@
 <p align="center">
 <img src="gif/ucs.gif" width="700">
 </p>
-
+<img width="1910" height="972" alt="ucs" src="https://github.com/user-attachments/assets/f6733385-cf46-4900-ab7b-3652be9b75a0" />
 ---
 
 # 🤖 Informed Search
