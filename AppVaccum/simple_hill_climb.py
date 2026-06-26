@@ -75,23 +75,30 @@ class simple_hill_climb_vacuum:
         return True
     
     def solve(self):
+        self.search_events = []
         current_node = self.start_node
+        self.search_events.append((current_node.state, f"Khởi đầu Hill Climbing từ vị trí: {self.get_location(current_node)}, Heuristic: {current_node.cost_path}"))
         
         while True:
             is_valid = False
             move = self.possible_move(current_node)
+            self.search_events.append((current_node.state, f"Lấy node hiện tại xét các láng giềng: Vị trí {self.get_location(current_node)}"))
 
             for m in move:
                 new_node = self.act(current_node, m)
+                self.search_events.append((new_node.state, f"  Đang đánh giá láng giềng: Vị trí {self.get_location(new_node)} qua hành động {m}, Heuristic: {new_node.cost_path}"))
 
                 if self.is_goal(new_node):
+                    self.search_events.append((new_node.state, f"  -> Đạt trạng thái đích ở vị trí: {self.get_location(new_node)}"))
                     return new_node
                 
                 if new_node.cost_path < current_node.cost_path:
+                    self.search_events.append((new_node.state, f"  -> Chấp nhận láng giềng tốt hơn: Vị trí {self.get_location(new_node)}, Heuristic: {new_node.cost_path} < {current_node.cost_path}"))
                     current_node = new_node
                     is_valid = True
                     break
             if not is_valid:
+                self.search_events.append((current_node.state, "Không tìm thấy láng giềng nào tốt hơn (Đạt đỉnh cục bộ / cực trị). Dừng tìm kiếm."))
                 return None    
     
     def matrix_to_tuple(self, matrix):
