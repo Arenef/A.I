@@ -87,9 +87,14 @@ class greedy_vacuum:
         return True
     
     def solve(self):
+        self.search_events = []
+        start_node = self.frontier[0] if self.frontier else None
+        if start_node:
+            self.search_events.append((start_node.state, f"Thêm node khởi đầu vào frontier: Vị trí {self.get_location(start_node)}, Heuristic: {start_node.cost_path}"))
 
         while self.frontier:
             node = heapq.heappop(self.frontier)
+            self.search_events.append((node.state, f"Lấy node khỏi frontier: Vị trí {self.get_location(node)}, Hành động: {node.act}, Heuristic: {node.cost_path}"))
 
             if self.is_goal(node):
                 return node
@@ -102,6 +107,7 @@ class greedy_vacuum:
                 if self.matrix_to_tuple(new_node.state) not in self.reached:
                     self.reached.add(self.matrix_to_tuple(new_node.state))
                     heapq.heappush(self.frontier, new_node)
+                    self.search_events.append((new_node.state, f"Thêm node vào frontier: Vị trí {self.get_location(new_node)}, Hành động: {new_node.act}, Heuristic: {new_node.cost_path}"))
         return None
     
     def matrix_to_tuple(self, matrix):
