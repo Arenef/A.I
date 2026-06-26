@@ -5,19 +5,18 @@ import minimax
 import alpha_beta
 import expectimax
 
-
-BG_MAIN = "#1E1E2E"          
-BG_CARD = "#252538"         
-COLOR_GRID = "#313244"      
-COLOR_HOVER = "#45475A"     
-COLOR_X = "#F38BA8"         
-COLOR_O = "#89B4FA"          
-COLOR_TEXT = "#CDD6F4"      
-COLOR_MUTED = "#A6ADC8"      
-COLOR_WIN = "#A6E3A1"       
-COLOR_WIN_TEXT = "#11111B"   
-COLOR_BTN = "#89B4FA"       
-COLOR_BTN_HOVER = "#B4BEFE"  
+BG_MAIN = "#1E1E2E"
+BG_CARD = "#252538"
+COLOR_GRID = "#313244"
+COLOR_HOVER = "#45475A"
+COLOR_X = "#F38BA8"
+COLOR_O = "#89B4FA"
+COLOR_TEXT = "#CDD6F4"
+COLOR_MUTED = "#A6ADC8"
+COLOR_WIN = "#A6E3A1"
+COLOR_WIN_TEXT = "#11111B"
+COLOR_BTN = "#89B4FA"
+COLOR_BTN_HOVER = "#B4BEFE"
 
 class TicTacToeApp:
     def __init__(self, root):
@@ -27,22 +26,21 @@ class TicTacToeApp:
         self.root.configure(bg=BG_MAIN)
         self.root.resizable(True, True)
 
-        # Game State Variables
-        self.human_player = "X"      
-        self.ai_player = "O"        
-        self.current_turn = "X"     
+        self.human_player = "X"
+        self.ai_player = "O"
+        self.current_turn = "X"
         self.board = [""] * 9
         self.game_over = False
         self.buttons = []
-        self.ai_thinking = False  
-        self.animation_after_id = None 
+        self.ai_thinking = False
+        self.animation_after_id = None
         self.thinking_steps = []
         self.current_step_index = 0
 
         self.skip_animation = tk.BooleanVar(value=False)
         self.animation_speed = tk.IntVar(value=150)
         
-        self.selected_algo = "alpha_beta"  
+        self.selected_algo = "alpha_beta"
 
         self.setup_fonts()
         self.create_widgets()
@@ -351,7 +349,6 @@ class TicTacToeApp:
         self.make_move(index, self.human_player)
         
         if not self.check_game_end():
-            # Pass turn to AI
             self.current_turn = self.ai_player
             self.update_status()
             self.trigger_ai_move()
@@ -373,13 +370,16 @@ class TicTacToeApp:
         start_time = time.perf_counter()
         
         if self.selected_algo == "minimax":
-            best_index, nodes, logs, thinking_steps = minimax.find_best_move(self.board, self.ai_player)
+            engine = minimax.Minimax(self.ai_player)
+            best_index, nodes, logs, thinking_steps = engine.find_best_move(self.board)
             cuts_text = "N/A (Minimax)"
         elif self.selected_algo == "expectimax":
-            best_index, nodes, logs, thinking_steps = expectimax.find_best_move(self.board, self.ai_player)
+            engine = expectimax.Expectimax(self.ai_player)
+            best_index, nodes, logs, thinking_steps = engine.find_best_move(self.board)
             cuts_text = "N/A (Expectimax)"
         else:
-            best_index, nodes, cuts, logs, thinking_steps = alpha_beta.find_best_move(self.board, self.ai_player)
+            engine = alpha_beta.AlphaBeta(self.ai_player)
+            best_index, nodes, cuts, logs, thinking_steps = engine.find_best_move(self.board)
             cuts_text = f"{cuts:,}"
 
         elapsed_ms = (time.perf_counter() - start_time) * 1000
