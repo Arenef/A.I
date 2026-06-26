@@ -159,7 +159,8 @@ Mô phỏng các kịch bản nâng cao và thực tế hơn của Robot hút b�
 ---
 
 # 🎨 Graph Coloring (Constraint Satisfaction Problems)
-Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho Chi Minh City Map District Coloring**.
+
+Giải quyết bài toán **Tô màu bản đồ các quận tại TP. Hồ Chí Minh** bằng phương pháp Thỏa mãn ràng buộc (CSP). Mục tiêu là tô màu sao cho không có hai quận nào liền kề nhau có cùng một màu sắc, sử dụng số lượng màu tối thiểu.
 ## ↩️ Backtracking Search
 
 <p align="center">
