@@ -63,7 +63,7 @@ Student ID: <b>24110241</b>
 ## ⭐ A* Search
 
 <p align="center">
-<img src="gif/inform/a_star.gif" width="700">
+<img src="gif/inform/a star.gif" width="700">
 </p>
 
 ---
