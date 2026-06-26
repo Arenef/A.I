@@ -1,5 +1,5 @@
-Huỳnh Ngọc Bảo Khang
-MSSV: 24110241
+Huỳnh Ngọc Bảo Khang.
+MSSV: 24110241.
 
 Giao diện của AppVaccum:
 <img width="1918" height="1015" alt="image" src="https://github.com/user-attachments/assets/a2b42b51-d9df-46b3-bf83-5e4dc18d7b0d" />
