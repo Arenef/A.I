@@ -1,6 +1,7 @@
 <h1 align="center">Artificial Intelligence Search Algorithms Visualization</h1>
+
 <p align="center">
-Visualization of classical Artificial Intelligence search algorithms in the Vacuum Cleaner World.
+Visualization of classical Artificial Intelligence search algorithms applied across multiple problem domains.
 </p>
 
 <p align="center">
@@ -13,13 +14,17 @@ Student ID: <b>24110241</b>
 # 📑 Table of Contents
 
 - 🎬 Algorithm Demonstrations
-  - 🔹 Uninformed Search
-  - 🤖 Informed Search
-  - ⛰️ Local Search
+  - 🔹 Uninformed Search (Vacuum World)
+  - 🤖 Informed Search (Vacuum World)
+  - ⛰️ Local Search (Vacuum World)
   - 🧩 Complex Vacuum World
+  - 🎨 Graph Coloring (CSP)
+  - ❌ Adversarial Search (Tic-Tac-Toe)
 - 📚 Algorithms Implemented
 - ✨ Features
+
 ---
+
 # 🎬 Algorithm Demonstrations
 
 # 🔹 Uninformed Search
@@ -139,7 +144,7 @@ Advanced search scenarios in the Vacuum Cleaner World.
 ## 🌳 AND-OR Search
 
 <p align="center">
-<img src="gif/complex/and or search.gif" width="700">
+<img src="gif/complex/and_or_search.gif" width="700">
 </p>
 
 ---
@@ -159,9 +164,10 @@ Advanced search scenarios in the Vacuum Cleaner World.
 </p>
 
 ---
-# 🎨 Constraint Satisfaction Problems (CSP)
 
-Advanced constraint satisfaction algorithms demonstrated via the **Graph Coloring** problem (specifically mapping districts of Ho Chi Minh City).
+# 🎨 Graph Coloring (Constraint Satisfaction Problems)
+
+Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho Chi Minh City Map District Coloring**.
 
 ## ↩️ Backtracking Search
 
@@ -194,9 +200,10 @@ Advanced constraint satisfaction algorithms demonstrated via the **Graph Colorin
 </p>
 
 ---
-# 🎮 Adversarial Search (Game Search)
 
-Adversarial search algorithms visualized through the classic game of **Tic-Tac-Toe** (including performance, depth, and pruning analysis).
+# ❌ Adversarial Search (Tic-Tac-Toe AI)
+
+Adversarial search algorithms visualized through the classic game of **Tic-Tac-Toe** featuring depth, performance, and cutting-edge analytical metrics.
 
 ## 🪵 Minimax Algorithm
 
@@ -219,17 +226,22 @@ Adversarial search algorithms visualized through the classic game of **Tic-Tac-T
 <p align="center">
 <img src="gif/game search/expectimax.gif" width="700">
 </p>
+
+---
+
 # 📚 Algorithms Implemented
 
 | Category | Algorithms |
 |-----------|------------|
-| 🔹 Uninformed Search | DFS • BFS • IDS • UCS |
-| 🤖 Informed Search | Greedy Best First Search • A* • IDA* |
-| ⛰️ Local Search | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
-| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |
-| 🎨 Constraint Satisfaction (CSP) | Backtracking • Forward Checking • AC-3 • Min-Conflicts |
-| 🎮 Adversarial Search | Minimax • Alpha-Beta Pruning • Expectimax |
+| 🔹 **Uninformed Search** | DFS • BFS • IDS • UCS |
+| 🤖 **Informed Search** | Greedy Best First Search • A* • IDA* |
+| ⛰️ **Local Search** | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
+| 🧩 **Complex Vacuum World** | AND-OR Search • Belief State Search • Partially Observable Search |
+| 🎨 **Graph Coloring (CSP)** | Backtracking • Forward Checking • AC-3 • Min-Conflicts |
+| ❌ **Tic-Tac-Toe (Adversarial)** | Minimax • Alpha-Beta Pruning • Expectimax |
+
 ---
+
 <p align="center">
 
 ⭐ **If this project helps you, please consider giving it a star!**
