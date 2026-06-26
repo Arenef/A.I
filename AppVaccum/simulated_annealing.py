@@ -83,32 +83,43 @@ class simulated_annealing:
         return True
     
     def solve(self):
+        self.search_events = []
         current_node = self.start_node
         T = self.T0
+        self.search_events.append((current_node.state, f"Bắt đầu Simulated Annealing từ vị trí: {self.get_location(current_node)}, Heuristic: {current_node.cost_path}, T0: {T}"))
         
         while T > self.Tmin:
             if self.is_goal(current_node):
+                self.search_events.append((current_node.state, f"  -> Tìm thấy đích: Vị trí {self.get_location(current_node)}"))
                 return current_node
             
             moves = self.possible_move(current_node)
             if not moves:
+                self.search_events.append((current_node.state, "Không tìm thấy di chuyển hợp lệ. Dừng tìm kiếm."))
                 break
                 
             m = random.choice(moves)
             next_node = self.act(current_node, m)
+            self.search_events.append((next_node.state, f"Đánh giá láng giềng ngẫu nhiên: Vị trí {self.get_location(next_node)} qua hành động {m}, Heuristic: {next_node.cost_path}"))
             
             delta = next_node.cost_path - current_node.cost_path
             
             if delta < 0:
+                self.search_events.append((next_node.state, f"  -> Chấp nhận láng giềng tốt hơn (Delta: {delta} < 0): Vị trí {self.get_location(next_node)}"))
                 current_node = next_node
             else:
                 p = math.exp(-delta / T)
-                if random.random() < p:
+                r = random.random()
+                if r < p:
+                    self.search_events.append((next_node.state, f"  -> Chấp nhận láng giềng tệ hơn với xác suất p = {p:.4f} > r = {r:.4f} (Nhiệt độ T: {T:.4f}): Vị trí {self.get_location(next_node)}"))
                     current_node = next_node
+                else:
+                    self.search_events.append((current_node.state, f"  -> Từ chối láng giềng tệ hơn (p = {p:.4f} <= r = {r:.4f})"))
             
             T = self.alpha * T
             
         if self.is_goal(current_node):
+            self.search_events.append((current_node.state, f"  -> Tìm thấy đích ở trạng thái cuối: Vị trí {self.get_location(current_node)}"))
             return current_node
         return None
                 
