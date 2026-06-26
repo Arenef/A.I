@@ -1,127 +1,150 @@
 # 🧹 AppVacuum
 
+<h1 align="center">Artificial Intelligence Search Algorithms Visualization</h1>
+
 <p align="center">
-  <b>Huỳnh Ngọc Bảo Khang</b><br>
-  MSSV: <b>24110241</b>
+Visualization of classical Artificial Intelligence search algorithms in the Vacuum Cleaner World.
 </p>
 
----
-# 📌 Giao diện chương trình
-
 <p align="center">
-<img src="https://github.com/user-attachments/assets/eebeb784-d73d-4f55-9281-b0d7c57a2763" width="100%">
-</p>
-
----
-
-# 🎬 Vacuum Agent Animation
-
-## 🔹 Uninformed Search
-
-### DFS
-
-| DFS 1 | DFS 2 |
-|:-----:|:-----:|
-| <img src="https://github.com/user-attachments/assets/d29e119d-6f95-4d5c-a1ad-f19f5cd5c0cc" width="450"> | <img src="https://github.com/user-attachments/assets/f854ee45-f167-4e4b-a14a-89d8dc09e925" width="450"> |
-
----
-
-### BFS
-
-| BFS 1 | BFS 2 |
-|:-----:|:-----:|
-| <img src="https://github.com/user-attachments/assets/a008f1cc-703e-439b-b2aa-62c91b2676d1" width="450"> | <img src="https://github.com/user-attachments/assets/9c1be726-79d2-493a-93ff-7936649552b0" width="450"> |
-
----
-
-### IDS
-
-<p align="center">
-<img src="gif/ids.gif" width="700">
+<b>Huỳnh Ngọc Bảo Khang</b><br>
+Student ID: <b>24110241</b>
 </p>
 
 ---
 
-### UCS
+# 📑 Table of Contents
+
+- 📌 User Interface
+- 🎬 Algorithm Demonstrations
+  - 🔹 Uninformed Search
+  - 🤖 Informed Search
+  - ⛰️ Local Search
+- 📚 Algorithms Implemented
+- ✨ Features
+
+---
+
+# 📌 User Interface
 
 <p align="center">
-<img src="gif/ucs.gif" width="700">
+<img src="images/interface.png" width="100%">
 </p>
-<img width="1910" height="972" alt="ucs" src="https://github.com/user-attachments/assets/f6733385-cf46-4900-ab7b-3652be9b75a0" />
+
+---
+
+# 🎬 Algorithm Demonstrations
+
+# 🔹 Uninformed Search
+
+## 🌲 Depth First Search (DFS)
+
+| DFS Example 1 | DFS Example 2 |
+|:-------------:|:-------------:|
+| <img src="gif/uninform/dfs1.gif" width="430"> | <img src="gif/uninform/dfs2.gif" width="430"> |
+
+---
+
+## 🌊 Breadth First Search (BFS)
+
+| BFS Example 1 | BFS Example 2 |
+|:-------------:|:-------------:|
+| <img src="gif/uninform/bfs1.gif" width="430"> | <img src="gif/uninform/bfs2.gif" width="430"> |
+
+---
+
+## 🔍 Iterative Deepening Search (IDS)
+
+<p align="center">
+<img src="gif/uninform/ids.gif" width="700">
+</p>
+
+---
+
+## 💰 Uniform Cost Search (UCS)
+
+<p align="center">
+<img src="gif/uninform/ucs.gif" width="700">
+</p>
+
+<p align="center">
+<img src="gif/uninform/ucs.png" width="85%">
+</p>
+
 ---
 
 # 🤖 Informed Search
 
-### A*
+## ⭐ A* Search
 
 <p align="center">
-<img src="gif/a star.gif" width="700">
+<img src="gif/inform/a_star.gif" width="700">
 </p>
 
 ---
 
-### Greedy Best First Search
+## 🧭 Greedy Best First Search
 
 <p align="center">
-<img src="gif/greedy.gif" width="700">
+<img src="gif/inform/greedy.gif" width="700">
 </p>
 
 ---
 
-### IDA*
+## 🚀 Iterative Deepening A* (IDA*)
 
 <p align="center">
-<img src="gif/ida star.gif" width="700">
+<img src="gif/inform/ida_star.gif" width="700">
 </p>
 
 ---
 
 # ⛰️ Local Search
 
-### Simple Hill Climbing
+## 📈 Simple Hill Climbing
 
 <p align="center">
-<img src="gif/simple hill climbing.gif" width="700">
+<img src="gif/local search/simple hill climbing.gif" width="700">
 </p>
 
 ---
 
-### Steepest Ascent Hill Climbing
+## 🏔️ Steepest Ascent Hill Climbing
 
 <p align="center">
-<img src="gif/steepest ascent hill climbing.gif" width="700">
+<img src="gif/local search/steepest ascent hill climbing.gif" width="700">
 </p>
 
 ---
 
-### Stochastic Hill Climbing
+## 🎲 Stochastic Hill Climbing
 
 <p align="center">
-<img src="gif/stochastic ascent hill climbing.gif" width="700">
+<img src="gif/local search/stochastic ascent hill climbing.gif" width="700">
 </p>
 
 ---
 
-### Random Restart Hill Climbing
+## 🔄 Random Restart Hill Climbing
 
 <p align="center">
-<img src="gif/random restart hill climbing.gif" width="700">
+<img src="gif/local search/random restart hill climbing.gif" width="700">
 </p>
 
 ---
 
-### Simulated Annealing
+## 🌡️ Simulated Annealing
 
 <p align="center">
-<img src="gif/simulated annealing.gif" width="700">
+<img src="gif/local search/simulated annealing.gif" width="700">
 </p>
 
 ---
 
-### Local Beam Search
+## 🔦 Local Beam Search
 
 <p align="center">
-<img src="gif/local beam search.gif" width="700">
+<img src="gif/local search/local beam search.gif" width="700">
 </p>
 
 ---
@@ -130,14 +153,34 @@
 
 | Category | Algorithms |
 |-----------|------------|
-| Uninformed Search | DFS, BFS, IDS, UCS |
-| Informed Search | Greedy Best First Search, A*, IDA* |
-| Local Search | Simple HC, Steepest HC, Stochastic HC, Random Restart HC, Simulated Annealing, Local Beam Search |
+| 🔹 Uninformed Search | DFS • BFS • IDS • UCS |
+| 🤖 Informed Search | Greedy Best First Search • A* • IDA* |
+| ⛰️ Local Search | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
+
+---
+
+# ✨ Features
+
+- 🖥️ Interactive graphical interface
+- 🎞️ Step-by-step algorithm animation
+- 📍 Node expansion visualization
+- 🧹 Vacuum Cleaner World simulation
+- 📊 Compare search strategies
+- 🎓 Educational visualization for AI courses
+
+---
+
+# 🛠️ Technologies
+
+- Python
+- Tkinter
+- Pygame
+- Object-Oriented Programming
 
 ---
 
 <p align="center">
 
-⭐ If you find this project useful, please leave a star!
+⭐ **If this project helps you, please consider giving it a star!**
 
 </p>
