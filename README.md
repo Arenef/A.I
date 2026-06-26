@@ -133,8 +133,6 @@ Student ID: <b>24110241</b>
 
 # 🧩 Complex Vacuum World
 
-Advanced search scenarios in the Vacuum Cleaner World.
-
 ## 🌳 AND-OR Search
 
 <p align="center">
@@ -160,9 +158,7 @@ Advanced search scenarios in the Vacuum Cleaner World.
 ---
 
 # 🎨 Graph Coloring (Constraint Satisfaction Problems)
-
 Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho Chi Minh City Map District Coloring**.
-
 ## ↩️ Backtracking Search
 
 <p align="center">
@@ -196,9 +192,6 @@ Advanced Constraint Satisfaction Problems (CSP) algorithms demonstrated via **Ho
 ---
 
 # ❌ Adversarial Search (Tic-Tac-Toe)
-
-Adversarial search algorithms visualized through the classic game of **Tic-Tac-Toe** featuring depth, performance, and cutting-edge analytical metrics.
-
 ## 🪵 Minimax Algorithm
 
 <p align="center">
