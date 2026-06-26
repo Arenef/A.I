@@ -14,13 +14,14 @@ Student ID: <b>24110241</b>
 ---
 
 # 📑 Table of Contents
+
 - 🎬 Algorithm Demonstrations
   - 🔹 Uninformed Search
   - 🤖 Informed Search
   - ⛰️ Local Search
+  - 🧩 Complex Vacuum World
 - 📚 Algorithms Implemented
 - ✨ Features
-
 ---
 # 🎬 Algorithm Demonstrations
 
@@ -134,6 +135,33 @@ Student ID: <b>24110241</b>
 
 ---
 
+# 🧩 Complex Vacuum World
+
+Advanced search scenarios in the Vacuum Cleaner World.
+
+## 🌳 AND-OR Search
+
+<p align="center">
+<img src="gif/complex/and or search.gif" width="700">
+</p>
+
+---
+
+## 🧠 Belief State Search
+
+<p align="center">
+<img src="gif/complex/belief state.gif" width="700">
+</p>
+
+---
+
+## 👀 Partially Observable Environment
+
+<p align="center">
+<img src="gif/complex/partially observable.gif" width="700">
+</p>
+
+---
 # 📚 Algorithms Implemented
 
 | Category | Algorithms |
@@ -141,28 +169,7 @@ Student ID: <b>24110241</b>
 | 🔹 Uninformed Search | DFS • BFS • IDS • UCS |
 | 🤖 Informed Search | Greedy Best First Search • A* • IDA* |
 | ⛰️ Local Search | Simple Hill Climbing • Steepest Ascent Hill Climbing • Stochastic Hill Climbing • Random Restart Hill Climbing • Simulated Annealing • Local Beam Search |
-
----
-
-# ✨ Features
-
-- 🖥️ Interactive graphical interface
-- 🎞️ Step-by-step algorithm animation
-- 📍 Node expansion visualization
-- 🧹 Vacuum Cleaner World simulation
-- 📊 Compare search strategies
-- 🎓 Educational visualization for AI courses
-
----
-
-# 🛠️ Technologies
-
-- Python
-- Tkinter
-- Pygame
-- Object-Oriented Programming
-
----
+| 🧩 Complex Vacuum World | AND-OR Search • Belief State Search • Partially Observable Search |
 
 <p align="center">
 
