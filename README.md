@@ -1,4 +1,4 @@
-Huỳnh Ngọc Bảo Khang<br>
+Họ và Tên: Huỳnh Ngọc Bảo Khang<br>
 MSSV: 24110241<br>
 
 Giao diện của AppVaccum:
