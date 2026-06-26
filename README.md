@@ -1,9 +1,4 @@
 <h1 align="center">Artificial Intelligence Search Algorithms Visualization</h1>
-
-<p align="center">
-Visualization of classical Artificial Intelligence search algorithms applied across multiple problem domains.
-</p>
-
 <p align="center">
 <b>Huỳnh Ngọc Bảo Khang</b><br>
 Student ID: <b>24110241</b>
@@ -21,7 +16,6 @@ Student ID: <b>24110241</b>
   - 🎨 Graph Coloring (CSP)
   - ❌ Adversarial Search (Tic-Tac-Toe)
 - 📚 Algorithms Implemented
-- ✨ Features
 
 ---
 
@@ -241,9 +235,3 @@ Adversarial search algorithms visualized through the classic game of **Tic-Tac-T
 | ❌ **Tic-Tac-Toe (Adversarial)** | Minimax • Alpha-Beta Pruning • Expectimax |
 
 ---
-
-<p align="center">
-
-⭐ **If this project helps you, please consider giving it a star!**
-
-</p>
