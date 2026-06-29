@@ -31,8 +31,7 @@ Student ID: <b>24110241</b>
 
 1. **Clone repository về máy**:
    ```bash
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/Arenef/A.I
    ```
 
 2. **Khởi chạy Menu Chính (Khuyên dùng)**:
@@ -48,15 +47,15 @@ Student ID: <b>24110241</b>
    - Graph Coloring: `cd GraphColoring && python app.py`
    - Tic-Tac-Toe: `cd TicTacToe && python app.py`
 
-### 🎮 Cách sử dụng UI
+### 🎮 Cách sử dụng 
 - **Chọn thuật toán**: Sử dụng Menu Dropdown (Combobox) hoặc Radio Button ở cột bên trái màn hình.
 - **Tốc độ (Speed)**: Kéo thanh trượt để điều chỉnh tốc độ hiệu ứng hoạt ảnh mô phỏng.
 - **Run/Stop/Reset**: Nhấn **RUN** để bắt đầu mô phỏng từng bước của thuật toán. Nhấn **RESET** để làm mới lại trạng thái bàn cờ/đồ thị.
-- **Logs & Thông số AI**: Quan sát bảng thông báo (Log) ở cột bên phải hoặc bên dưới để xem chi tiết quá trình AI suy nghĩ, số lượng trạng thái duyệt, số lần cắt tỉa (Pruning Cuts) và đưa ra quyết định.
+- **Logs & Thông số AI**: Quan sát bảng thông báo (Log) ở cột bên phải hoặc bên dưới để xem chi tiết quá trình AI suy nghĩ, số lượng trạng thái duyệt, số lần cắt tỉa và đưa ra quyết định.
 
 ---
 
-# 📁 Project Structure (Cấu trúc dự án)
+# 📁 Project Structure 
 
 Mã nguồn dự án được tổ chức gọn gàng thành các gói (packages) chuyên biệt theo nhóm thuật toán AI:
 
