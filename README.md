@@ -79,6 +79,16 @@ Mã nguồn dự án được tổ chức gọn gàng thành các gói (packages
 ---
 
 # 🎬 Algorithm Demonstrations
+
+## 🌟 Main Menu (Giao diện chọn chế độ)
+Giao diện trung tâm giúp bạn điều hướng và khởi chạy các mô phỏng AI một cách dễ dàng và trực quan. 
+
+<p align="center">
+<img width="738" height="580" alt="image" src="https://github.com/user-attachments/assets/46eb41ec-eb5b-4e72-94aa-a64e734972bf" />
+</p>
+
+---
+
 # 🧹 AppVacuum
 # 🔹 Uninformed Search
 Các thuật toán tìm kiếm cơ bản không sử dụng thông tin về khoảng cách hay chi phí tới mục tiêu. Thuật toán chỉ duyệt qua các trạng thái dựa trên cấu trúc đồ thị của môi trường Vacuum World để tìm đường đi.
