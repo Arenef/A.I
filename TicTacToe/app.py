@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import font as tkfont
 import time
-import minimax
-import alpha_beta
-import expectimax
+from adversal import minimax
+from adversal import alpha_beta
+from adversal import expectimax
 
 BG_MAIN = "#1E1E2E"
 BG_CARD = "#252538"

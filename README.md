@@ -8,14 +8,73 @@ Student ID: <b>24110241</b>
 
 # 📑 Table of Contents
 
-- 🎬 Algorithm Demonstrations
-  - 🔹 Uninformed Search (Vacuum World)
-  - 🤖 Informed Search (Vacuum World)
-  - ⛰️ Local Search (Vacuum World)
-  - 🧩 Complex Vacuum World
-  - 🎨 Graph Coloring (CSP)
-  - ❌ Adversarial Search (Tic-Tac-Toe)
-- 📚 Algorithms Implemented
+- [🚀 Getting Started (Hướng dẫn cài đặt & sử dụng)](#-getting-started-hướng-dẫn-cài-đặt--sử-dụng)
+- [📁 Project Structure (Cấu trúc dự án)](#-project-structure-cấu-trúc-dự-án)
+- [🎬 Algorithm Demonstrations](#-algorithm-demonstrations)
+  - [🔹 Uninformed Search (Vacuum World)](#-uninformed-search)
+  - [🤖 Informed Search (Vacuum World)](#-informed-search)
+  - [⛰️ Local Search (Vacuum World)](#️-local-search)
+  - [🧩 Complex Vacuum World](#-complex-vacuum-world)
+  - [🎨 Graph Coloring (CSP)](#-graph-coloring-constraint-satisfaction-problems)
+  - [❌ Adversarial Search (Tic-Tac-Toe)](#-adversarial-search-tic-tac-toe)
+- [📚 Algorithms Implemented](#-algorithms-implemented)
+
+---
+
+# 🚀 Getting Started (Hướng dẫn cài đặt & sử dụng)
+
+### 💻 Yêu cầu hệ thống
+- **Python 3.8+**
+- Không yêu cầu cài đặt thư viện ngoài (sử dụng hoàn toàn thư viện chuẩn `tkinter` của Python).
+
+### 🛠️ Cài đặt và Chạy ứng dụng
+
+1. **Clone repository về máy**:
+   ```bash
+   git clone https://github.com/your-username/your-repo.git
+   cd your-repo
+   ```
+
+2. **Khởi chạy Menu Chính (Khuyên dùng)**:
+   Tại thư mục gốc của dự án, chạy lệnh:
+   ```bash
+   python main.py
+   ```
+   Ứng dụng sẽ mở lên một Menu Chính (AI Projects Hub) cho phép bạn chọn và truy cập vào 3 mô-đun mô phỏng: Máy hút bụi (Vacuum), Tô màu đồ thị (Graph Coloring), và Cờ Caro (Tic-Tac-Toe). Giao diện menu được thiết kế hiện đại và có khả năng tự động liên kết với các app con một cách mượt mà.
+
+3. **Khởi chạy từng mô-đun độc lập (Tùy chọn)**:
+   Nếu bạn chỉ muốn mở một bài toán cụ thể, có thể chạy trực tiếp file `app.py` bên trong từng thư mục:
+   - Vacuum World: `cd AppVaccum && python app.py`
+   - Graph Coloring: `cd GraphColoring && python app.py`
+   - Tic-Tac-Toe: `cd TicTacToe && python app.py`
+
+### 🎮 Cách sử dụng UI
+- **Chọn thuật toán**: Sử dụng Menu Dropdown (Combobox) hoặc Radio Button ở cột bên trái màn hình.
+- **Tốc độ (Speed)**: Kéo thanh trượt để điều chỉnh tốc độ hiệu ứng hoạt ảnh mô phỏng.
+- **Run/Stop/Reset**: Nhấn **RUN** để bắt đầu mô phỏng từng bước của thuật toán. Nhấn **RESET** để làm mới lại trạng thái bàn cờ/đồ thị.
+- **Logs & Thông số AI**: Quan sát bảng thông báo (Log) ở cột bên phải hoặc bên dưới để xem chi tiết quá trình AI suy nghĩ, số lượng trạng thái duyệt, số lần cắt tỉa (Pruning Cuts) và đưa ra quyết định.
+
+---
+
+# 📁 Project Structure (Cấu trúc dự án)
+
+Mã nguồn dự án được tổ chức gọn gàng thành các gói (packages) chuyên biệt theo nhóm thuật toán AI:
+
+```text
+├── main.py                     # Menu chính trung tâm kết nối các mô-đun
+├── AppVaccum/                  # 🧹 Máy Hút Bụi (Đường đi & Tìm kiếm)
+│   ├── app.py                  
+│   ├── uninform/               # Tìm kiếm mù (BFS, DFS, UCS, IDS)
+│   ├── inform/                 # Tìm kiếm có thông tin (A*, Greedy, IDA*)
+│   ├── local/                  # Tìm kiếm cục bộ (Hill Climbing, Simulated Annealing...)
+│   └── complex_environment/    # Môi trường phức tạp (And-Or, Partially Observable...)
+├── GraphColoring/              # 🎨 Tô Màu Đồ Thị (Thỏa mãn ràng buộc)
+│   ├── app.py                  
+│   └── csp/                    # Các thuật toán CSP (AC-3, Backtracking, Min Conflicts...)
+└── TicTacToe/                  # ❌ Cờ Caro (Đối kháng)
+    ├── app.py                  
+    └── adversal/               # Các thuật toán Game (Minimax, Alpha-Beta, Expectimax)
+```
 
 ---
 

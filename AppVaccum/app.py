@@ -1,24 +1,24 @@
 import tkinter as tk
 from tkinter import ttk
 
-from dfs_vacuum_1 import dfs_vacuum_1
-from dfs_vacuum_2 import dfs_vacuum_2
-from bfs_vaccum_1 import bfs_vacuum_1
-from bfs_vaccum_2 import bfs_vacuum_2
-from ucs_vacuum import ucs_vacuum
-from a_star_vacuum import a_star_vacuum
-from greedy_vacuum import greedy_vacuum
-from ida_star import ida_star_vacuum
-from simple_hill_climb import simple_hill_climb_vacuum
-from steepest_ascent_hill_climbing import steepest_ascent_hill_climbing
-from stochastic_hill_climbing import stochastic_ascent_hill_climbing
-from local_beam_search import local_beam_search
-from random_restart_hill_climbing import random_restart_hill_climbing
-from simulated_annealing import simulated_annealing
-from ids_vacuum import ids_vacuum
-from and_or_search_vacuum import and_or_search_vacuum
-from partially_observable_vacuum import partially_observable_vacuum
-from belief_state_search_vacuum import belief_state_search_vacuum
+from uninform.dfs_vacuum_1 import dfs_vacuum_1
+from uninform.dfs_vacuum_2 import dfs_vacuum_2
+from uninform.bfs_vaccum_1 import bfs_vacuum_1
+from uninform.bfs_vaccum_2 import bfs_vacuum_2
+from uninform.ucs_vacuum import ucs_vacuum
+from inform.a_star_vacuum import a_star_vacuum
+from inform.greedy_vacuum import greedy_vacuum
+from inform.ida_star import ida_star_vacuum
+from local.simple_hill_climb import simple_hill_climb_vacuum
+from local.steepest_ascent_hill_climbing import steepest_ascent_hill_climbing
+from local.stochastic_hill_climbing import stochastic_ascent_hill_climbing
+from local.local_beam_search import local_beam_search
+from local.random_restart_hill_climbing import random_restart_hill_climbing
+from local.simulated_annealing import simulated_annealing
+from uninform.ids_vacuum import ids_vacuum
+from complex_environment.and_or_search_vacuum import and_or_search_vacuum
+from complex_environment.partially_observable_vacuum import partially_observable_vacuum
+from complex_environment.belief_state_search_vacuum import belief_state_search_vacuum
 
 class VacuumApp:
 

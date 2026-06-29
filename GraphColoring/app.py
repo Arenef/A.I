@@ -3,10 +3,10 @@ from tkinter import scrolledtext
 from tkinter import ttk
 import threading
 import time
-from backtrack import variable, csp
-from forward_checking import forward_checking
-from ac3 import ac3
-from min_conflicts import min_conflicts
+from csp.backtrack import variable, csp
+from csp.forward_checking import forward_checking
+from csp.ac3 import ac3
+from csp.min_conflicts import min_conflicts
 import random
 
 districts = ["Gò Vấp", "Bình Thạnh", "Phú Nhuận", "Tân Bình", "Quận 1", "Quận 3", "Quận 10", "Quận 11", "Quận 5", "Quận 6", "Quận 4"]
