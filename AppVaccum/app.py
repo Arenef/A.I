@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from tkinter import ttk
 
@@ -655,7 +656,10 @@ class VacuumApp:
             text=f"Đang chạy {self.algorithm_var.get()}"
         )
 
+        start_time = time.time()
         node = self.vaccum_logic.solve()
+        end_time = time.time()
+        self.solve_time = end_time - start_time
 
         self.log_text.delete("1.0", tk.END)
 
@@ -714,7 +718,10 @@ class VacuumApp:
             text=f"Chạy lời giải {self.algorithm_var.get()}"
         )
 
+        start_time = time.time()
         node = self.vaccum_logic.solve()
+        end_time = time.time()
+        self.solve_time = end_time - start_time
 
         self.log_text.delete("1.0", tk.END)
 
@@ -766,6 +773,10 @@ class VacuumApp:
                 text="✔ Hoàn thành"
             )
             self.log("🏆 [HOÀN THÀNH] Không có lời giải để hiển thị.")
+            self.log(f"📊 THỐNG KÊ:")
+            self.log(f"- Số node đã duyệt: {len(getattr(self.vaccum_logic, 'search_events', []))}")
+            self.log(f"- Thời gian: {getattr(self, 'solve_time', 0):.4f} giây")
+            self.log(f"- Độ dài đường đi: 0")
             self.log("=" * 35)
 
     def animate_step(self):
@@ -800,6 +811,10 @@ class VacuumApp:
                         text="✔ Hoàn thành"
                     )
                     self.log("🏆 [HOÀN THÀNH] Hoàn thành quá trình duyệt tìm kiếm! Không tìm thấy lời giải.")
+                    self.log(f"📊 THỐNG KÊ:")
+                    self.log(f"- Số node đã duyệt: {len(getattr(self.vaccum_logic, 'search_events', []))}")
+                    self.log(f"- Thời gian: {getattr(self, 'solve_time', 0):.4f} giây")
+                    self.log(f"- Độ dài đường đi: 0")
                     self.log("=" * 35)
                     self.is_running = False
 
@@ -829,6 +844,10 @@ class VacuumApp:
                     text="✔ Hoàn thành"
                 )
                 self.log("🏆 [HOÀN THÀNH] Robot đã hoàn thành di chuyển dọn dẹp theo lời giải!")
+                self.log(f"📊 THỐNG KÊ:")
+                self.log(f"- Số node đã duyệt: {len(getattr(self.vaccum_logic, 'search_events', []))}")
+                self.log(f"- Thời gian: {getattr(self, 'solve_time', 0):.4f} giây")
+                self.log(f"- Độ dài đường đi: {max(0, len(self.solution_path) - 1)}")
                 self.log("=" * 35)
                 self.is_running = False
 

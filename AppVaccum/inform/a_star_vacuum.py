@@ -154,6 +154,7 @@ class a_star_vacuum:
             self.print_matrix(p[0])
             print(f'Action: {p[1]}')
             print("=" * 15)
-        
-vaccum = a_star_vacuum()
-vaccum.run()
+
+if __name__ == "__main__":    
+    vaccum = a_star_vacuum()
+    vaccum.run()

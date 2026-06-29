@@ -135,6 +135,7 @@ class bfs_vacuum_2:
             self.print_matrix(p[0])
             print(f'Action: {p[1]}')
             print("=" * 15)
-        
-vaccum = bfs_vacuum_2()
-vaccum.run()
+    
+if __name__ == "__main__": 
+    vaccum = bfs_vacuum_2()
+    vaccum.run()

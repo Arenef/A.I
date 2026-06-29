@@ -150,6 +150,7 @@ class greedy_vacuum:
             self.print_matrix(p[0])
             print(f'Action: {p[1]}')
             print("=" * 15)
-        
-vaccum = greedy_vacuum()
-vaccum.run()
+
+if __name__ == "__main__": 
+    vaccum = greedy_vacuum()
+    vaccum.run()

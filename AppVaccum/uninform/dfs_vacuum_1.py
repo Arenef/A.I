@@ -134,6 +134,7 @@ class dfs_vacuum_1:
             self.print_matrix(p[0])
             print(f'Action: {p[1]}')
             print("=" * 15)
-        
-vaccum = dfs_vacuum_1()
-vaccum.run()
+
+if __name__ == "__main__":      
+    vaccum = dfs_vacuum_1()
+    vaccum.run()

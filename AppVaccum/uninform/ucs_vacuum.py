@@ -137,6 +137,7 @@ class ucs_vacuum:
             self.print_matrix(p[0])
             print(f'Action: {p[1]}')
             print("=" * 15)
-        
-vaccum = ucs_vacuum()
-vaccum.run()
+
+if __name__ == "__main__": 
+    vaccum = ucs_vacuum()
+    vaccum.run()
