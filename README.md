@@ -34,7 +34,7 @@ Student ID: <b>24110241</b>
    git clone https://github.com/Arenef/A.I
    ```
 
-2. **Khởi chạy Menu Chính (Khuyên dùng)**:
+2. **Khởi chạy Menu Chính**:
    Tại thư mục gốc của dự án, chạy lệnh:
    ```bash
    python main.py
